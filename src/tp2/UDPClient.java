@@ -21,23 +21,25 @@ public class UDPClient {
 		}
 		String multicast_address = args[0];
 		int multicast_port = Integer.parseInt(args[1]);
-		System.out.println("vamos joinar o grupo");
+		System.out.println("vamos joinar o grupo" + multicast_address + " " + multicast_port);
 		
 		// join a Multicast group
 		 InetAddress group = InetAddress.getByName(multicast_address);
 		 MulticastSocket s = new MulticastSocket(multicast_port);
+		 s.joinGroup(group);
 		 // get their responses!
 		 byte[] buf = new byte[1000];
 		 DatagramPacket recv = new DatagramPacket(buf, buf.length);
 		 s.receive(recv);
 		 String hostname = recv.getAddress().getHostAddress();
-		 System.out.println("recebi do server:" + recv.getData());
+		 int port = Integer.parseInt(new String(recv.getData(), recv.getOffset(), recv.getLength()));
+		 System.out.println("multicast: " + multicast_address + " " + multicast_port + " : " + hostname+ " "+ port);
 		 // OK, I'm done talking - leave the group...
 		 s.leaveGroup(group);
 		 s.close();
 		
 		
-		/*DatagramSocket clientSocket = new DatagramSocket();
+		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(hostname);
 		byte[] receiveData = new byte[1024];
 		byte[] sendData = sentence.getBytes();
@@ -52,7 +54,7 @@ public class UDPClient {
 		} else {
 			System.out.println(response);
 		}
-		clientSocket.close();*/
+		clientSocket.close();
 
 	}
 

@@ -19,7 +19,7 @@ public class UDPServer {
 		byte[] sendData = new byte[1024];
 		
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-		MulticastTask task = new MulticastTask(args[1], Integer.parseInt(args[2]));
+		MulticastTask task = new MulticastTask(args[1], Integer.parseInt(args[2]),port);
 		
 		executor.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
 		

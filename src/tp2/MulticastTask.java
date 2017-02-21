@@ -11,10 +11,12 @@ public class MulticastTask implements Runnable{
 	
 	String multicast_address = null;
 	int multicast_port = 0;
+	int service_port = 0;
 	
-	public MulticastTask(String multicast_address, int multicast_port){
+	public MulticastTask(String multicast_address, int multicast_port,int service_port){
 		this.multicast_address = multicast_address;
 		this.multicast_port = multicast_port;
+		this.service_port = service_port;
 	}
 
 	@Override
@@ -26,14 +28,14 @@ public class MulticastTask implements Runnable{
      
         // Open a new DatagramSocket, which will be used to send the data.
         DatagramSocket serverSocket = new DatagramSocket();
-                String msg = "ora boas pessoal!";
+                String msg = ""+this.service_port;
 
                 // Create a packet that will contain the data
                 // (in the form of bytes) and send it.
                 DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(), msg.getBytes().length, addr, multicast_port);
                 serverSocket.send(msgPacket);
      
-                System.out.println("Server sent packet with msg: " + msg);
+                System.out.println("multicast: " + multicast_address + " " + multicast_port + " : " + msg);
                 serverSocket.close();
         } catch (IOException ex) {
             ex.printStackTrace();
