@@ -1,0 +1,7 @@
+server side
+1 a escutar o mdb a espera de um putchunk (pode criar outro thread para guardar chunk e eventualmente mandar stored em MC)
+1 a escutar o mc a espera de um getchunk (pode criar outro thread para buscar chunk e eventualmente mandar chunk por MDR)
+  a escutar o mc tambem a espera de um delete (pode criar para apagar chunk)
+  a escutar o mc tambem a espera de um removed ( pode criar outro thread para dar update do replicationdegree se tiver o chunk, eventualmente pefir putchunk se o replication degree estiver abaixo do desejado)
+
+initiator peer
