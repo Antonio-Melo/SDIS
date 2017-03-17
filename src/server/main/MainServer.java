@@ -1,4 +1,4 @@
-package sdis1;
+package server.main;
 
 public class MainServer {
 
@@ -12,10 +12,11 @@ public class MainServer {
 	 * 5 - MDB Port
 	 * 6 - MDR Address
 	 * 7 - MDR Port
+	 * 8 - RMI Remote Object name
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		if(args.length != 7){
+		if(args.length != 8){
 			System.out.println("Usage: MainServer <Server ID> <MC Address> <MC Port> <MDB Address> <MDB Port>  <MDR Address> <MDR Port>");
 			return;
 		}
@@ -55,7 +56,21 @@ public class MainServer {
 			System.out.println("MDR Port wrong!");
 			return;
 		}
+		String remoteObject = args[7];
+		if (remoteObject == null){
+			System.out.println("Remote Object Name wrong!");
+			return;
+		}
+		
 		System.out.println("Starting services...");
+		
+		MCListener mcListener = new MCListener(mcAddress, mcPort);
+		MDBListener mdbListener = new MDBListener(mdbAddress, mdbPort);
+		
+		Thread mcThread = new Thread(mcListener);
+		Thread mdbThread = new Thread(mdbListener);
+		
+		System.out.println("Services running...");
 		
 		
 	}
