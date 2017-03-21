@@ -7,10 +7,12 @@ import java.net.MulticastSocket;
 
 public class MCListener implements Runnable {
 
+	int serverID;
 	String address;
 	int port;
 
-	public MCListener(String address, int port) {
+	public MCListener(int serverID, String address, int port) {
+		this.serverID = serverID;
 		this.address = address;
 		this.port = port;
 	}

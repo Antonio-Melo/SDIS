@@ -5,14 +5,22 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import server.task.StoreChunk;
+
 public class MDBListener implements Runnable {
 
+	int serverID;
 	String address;
 	int port;
+	String mcAddress;
+	int mcPort;
 
-	public MDBListener(String address, int port) {
+	public MDBListener(int serverID, String address, int port, String mcAddress, int mcPort) {
+		this.serverID = serverID;
 		this.address = address;
 		this.port = port;
+		this.mcAddress = mcAddress;
+		this.mcPort = mcPort;
 	}
 
 	@Override
@@ -20,23 +28,29 @@ public class MDBListener implements Runnable {
 		InetAddress mdbGroup;
 		try {
 			mdbGroup = InetAddress.getByName(address);
-			MulticastSocket s = new MulticastSocket(port);
-			s.joinGroup(mdbGroup);
+			MulticastSocket socket = new MulticastSocket(port);
+			socket.joinGroup(mdbGroup);
 			// Get PUTCHUNK command
 			byte[] buf = new byte[70000];
 			DatagramPacket receivedCmd = new DatagramPacket(buf, buf.length);
 			while (!Thread.currentThread().isInterrupted()) {
-				s.receive(receivedCmd);
-				// String hostname = recv.getAddress().getHostAddress();
-				// int port = Integer.parseInt(new String(recv.getData(),
-				// recv.getOffset(), recv.getLength()));
-				// System.out.println("multicast: " + address + " " + port + " :
-				// " + hostname+ " "+ port);
-				// OK, I'm done talking - leave the group...
-
+				socket.receive(receivedCmd);
+				String cmdSplit[] = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength()).split("\\s+");
+				if(cmdSplit[0] == "PUTCHUNK"){
+					new Thread(new StoreChunk(
+							cmdSplit[1],
+							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[3],
+						    Integer.parseInt(cmdSplit[4]),
+						    "fsdf",
+							serverID, 
+							mcAddress, 
+							mcPort)).start();
+					//TODO parse body
+				}
 			}
-			s.leaveGroup(mdbGroup);
-			s.close();
+			socket.leaveGroup(mdbGroup);
+			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

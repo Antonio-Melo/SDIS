@@ -64,8 +64,8 @@ public class MainServer {
 		
 		System.out.println("Starting services...");
 		
-		MCListener mcListener = new MCListener(mcAddress, mcPort);
-		MDBListener mdbListener = new MDBListener(mdbAddress, mdbPort);
+		MCListener mcListener = new MCListener(serverID, mcAddress, mcPort);
+		MDBListener mdbListener = new MDBListener(serverID, mdbAddress, mdbPort, mcAddress, mcPort);
 		
 		Thread mcThread = new Thread(mcListener);
 		Thread mdbThread = new Thread(mdbListener);
