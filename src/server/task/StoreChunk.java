@@ -24,11 +24,11 @@ public class StoreChunk implements Runnable {
 				)).start();
 	}
 
-	String version;
-	int senderID;
-	String fileID;
-	int chunkNo;
-	byte[] body;
+	private String version;
+	private int senderID;
+	private String fileID;
+	private int chunkNo;
+	private byte[] body;
 
 	public StoreChunk(String version, int senderID, String fileID, int chunkNo, byte[] body) {
 		this.version = version;
@@ -71,6 +71,7 @@ public class StoreChunk implements Runnable {
 					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {
 						f.createNewFile();
 						// TODO write body in file
+						Files.write(f.toPath(), this.body);
 						sendStoredReply();
 					}
 				} catch (IOException e) {
