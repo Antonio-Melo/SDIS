@@ -36,9 +36,8 @@ public class Peer {
 	 * 8 - RMI Remote Object name
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		if(args.length != 7 && args.length != 9){
-			System.out.println("Usage: MainServer <Server ID> <MC Address> <MC Port> <MDB Address> <MDB Port>  <MDR Address> <MDR Port>");
+			System.out.println("Usage: MainServer <Server ID> <MC Address> <MC Port> <MDB Address> <MDB Port> <MDR Address> <MDR Port> <Data Path> <RMI Remote Object Name>");
 			return;
 		}
 
