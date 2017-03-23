@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.util.Arrays;
 
 import server.task.StoreChunk;
 
@@ -21,8 +22,13 @@ public class MDBListener implements Runnable {
 			DatagramPacket receivedCmd = new DatagramPacket(buf, buf.length);
 			while (!Thread.currentThread().isInterrupted()) {
 				socket.receive(receivedCmd);
-				String cmdSplit[] = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength()).split("\\s+");
-				if(cmdSplit[0] == "PUTCHUNK"){
+				String receivedCmdString = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength());
+				String cmdSplit[] = receivedCmdString.split("\\s+");
+				if(cmdSplit[0].equals("PUTCHUNK")){
+					String CRLF = new String("\r\n\r\n");
+					int bodyIndex = receivedCmdString.indexOf(CRLF)+4;
+					
+					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
 					new Thread(new StoreChunk(
 							cmdSplit[1],
 							Integer.parseInt(cmdSplit[2]),
@@ -30,7 +36,6 @@ public class MDBListener implements Runnable {
 						    Integer.parseInt(cmdSplit[4]),
 						    "fsdf"
 						    )).start();
-					//TODO parse body
 				}
 			}
 			socket.leaveGroup(mdbGroup);
