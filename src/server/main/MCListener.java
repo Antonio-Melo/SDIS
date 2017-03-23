@@ -20,11 +20,11 @@ public class MCListener implements Runnable {
 			while (!Thread.currentThread().isInterrupted()) {
 				socket.receive(receivedCmd);
 				String cmdSplit[] = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength()).split("\\s+");
-				if(cmdSplit[0] == "GETCHUNK"){
+				if(cmdSplit[0].equals("GETCHUNK")){
 					
-				} else if(cmdSplit[0] == "DELETE"){
+				} else if(cmdSplit[0].equals("DELETE")){
 					
-				} else if(cmdSplit[0] == "REMOVED"){
+				} else if(cmdSplit[0].equals("REMOVED")){
 					
 				}
 			}
