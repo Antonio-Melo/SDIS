@@ -1,4 +1,4 @@
-package server.task;
+package server.task.commonPeer;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import java.nio.file.Files;
 
 import server.main.Peer;
 
-public class StoreChunk implements Runnable {
+public class PutChunk implements Runnable {
 
 	public static void main(String[] args) throws IOException {
 		byte[] carlos = {(byte) 0xff,(byte)0xff, (byte)0xff};
-		new Thread(new StoreChunk(
+		new Thread(new PutChunk(
 				"1.0",
 				2,
 				"fdahsjkhfuihsdf",
@@ -28,7 +28,7 @@ public class StoreChunk implements Runnable {
 	private int chunkNo;
 	private byte[] body;
 
-	public StoreChunk(String version, int senderID, String fileID, int chunkNo, byte[] body) {
+	public PutChunk(String version, int senderID, String fileID, int chunkNo, byte[] body) {
 		this.version = version;
 		this.senderID = senderID;
 		this.fileID = fileID;
