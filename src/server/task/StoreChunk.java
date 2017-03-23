@@ -9,6 +9,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 
+import server.main.Peer;
+
 public class StoreChunk implements Runnable {
 	
 	public static void main(String[] args) throws IOException {
@@ -17,10 +19,7 @@ public class StoreChunk implements Runnable {
 				2,
 				"fdahsjkhfuihsdf",
 			    4,
-			    "fsdf",
-				2, 
-				"127.0.0.1", 
-				4455)).start();
+			    "fsdf")).start();
 	}
 	
 	String version;
@@ -28,26 +27,20 @@ public class StoreChunk implements Runnable {
 	String fileID;
 	int chunkNo;
 	String body;
-	int serverID;
-	String replyAddress;
-	int replyPort;
 
-	public StoreChunk(String version, int senderID, String fileID, int chunkNo, String body, int serverID, String replyAddress, int replyPort) {
+	public StoreChunk(String version, int senderID, String fileID, int chunkNo, String body) {
 		this.version = version;
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 		this.body = body;
-		this.serverID = serverID;
-		this.replyAddress = replyAddress;
-		this.replyPort = replyPort;
 	}
 	
 	private boolean sendStoredReply() throws IOException{
 		DatagramSocket clientSocket = new DatagramSocket();
-		InetAddress IPAddress = InetAddress.getByName(this.replyAddress);
-		byte[] sendData = new String("STORED " + this.version + " " + this.serverID + " " + this.fileID + " " + this.chunkNo + " \r\n").getBytes();
-		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, this.replyPort);
+		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
+		byte[] sendData = new String("STORED " + this.version + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " \r\n").getBytes();
+		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
 		clientSocket.close();
 		return true;
@@ -55,13 +48,13 @@ public class StoreChunk implements Runnable {
 	
 	@Override
 	public void run() {
-
+		//TODO verificacao do espaco antes de guardar
 		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
-		if(this.senderID != this.serverID){
+		if(this.senderID != Peer.serverID){
 			System.out.println("vou criar chunk");
-			File dir = new File(".\\" + this.fileID + "\\" + this.version);
+			File dir = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.version);
 			dir.mkdirs();
-			File f = new File(".\\" + this.fileID + "\\" + this.version + "\\" + this.chunkNo);
+			File f = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.version + "\\" + this.chunkNo);
 			if(f.exists() && !f.isDirectory()){
 				System.out.println("ja existia gg");
 				try {
