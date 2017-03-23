@@ -24,7 +24,7 @@ public class Delete implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("vou apagar file");
-		File dir = new File(Peer.dataPath + "\\" + this.fileID);
+		File dir = new File(Peer.dataPath + Peer.FS + this.fileID);
 		if (dir.isDirectory()) {
 			for (File c : dir.listFiles())
 				try {

@@ -2,6 +2,7 @@ package server.main;
 
 public class Peer {
 
+	public static final String FS = System.getProperty("file.separator");
 	public static int serverID = 1;
 	public static String mcAddress = "166.0.0.1";
 	public static int mcPort = 9001;
@@ -9,7 +10,7 @@ public class Peer {
 	public static int mdbPort = 9002;
 	public static String mdrAddress = "166.0.0.3";
 	public static int mdrPort = 9003;
-	public static String dataPath = "." + System.getProperty("file.separator") + serverID + "data";
+	public static String dataPath = "." + FS + serverID + "data";
 	public static int capacity = 0;
 	public static String remoteObject = "peer" + serverID;
 

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 
 import server.main.Peer;
@@ -54,11 +52,10 @@ public class StoreChunk implements Runnable {
 	public void run() {
 		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
 		if (this.senderID != Peer.serverID) {
-			String fileSeparator = System.getProperty("file.separator");
 			System.out.println("vou criar chunk");
-			File dir = new File(Peer.dataPath + fileSeparator + this.fileID);
+			File dir = new File(Peer.dataPath + Peer.FS + this.fileID);
 			dir.mkdirs();
-			File f = new File(Peer.dataPath + fileSeparator + this.fileID + fileSeparator + this.chunkNo);
+			File f = new File(Peer.dataPath + Peer.FS + this.fileID + Peer.FS + this.chunkNo);
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("ja existia gg");
 				try {
