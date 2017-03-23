@@ -18,7 +18,7 @@ public class ClientAppListener implements ClientInterface{
 
 	@Override
 	public void delete(String filePath) throws RemoteException {
-		new Delete(filePath);
+		new DeleteProtocol(filePath);
 	}
 
 	@Override
