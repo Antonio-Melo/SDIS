@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Arrays;
 
-import server.task.StoreChunk;
+import server.task.commonPeer.PutChunk;
 
 public class MDBListener implements Runnable {
 
@@ -29,7 +29,7 @@ public class MDBListener implements Runnable {
 					int bodyIndex = receivedCmdString.indexOf(CRLF)+4;
 					
 					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
-					new Thread(new StoreChunk(
+					new Thread(new PutChunk(
 							cmdSplit[1],
 							Integer.parseInt(cmdSplit[2]),
 							cmdSplit[3],
