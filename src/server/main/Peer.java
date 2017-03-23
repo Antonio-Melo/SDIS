@@ -100,7 +100,14 @@ public class Peer {
 
 		System.out.println("Services running...");
 
-		System.out.println("Starting services...");
+		System.out.println("Running configurations:");
+		System.out.println("Server ID: " + serverID);
+		System.out.println("MC Multicast Channel: " + mcAddress + ":" + mcPort);
+		System.out.println("MDB Multicast Channel: " + mdbAddress + ":" + mdbPort);
+		System.out.println("MDR Multicast Channel: " + mdrAddress + ":" + mdrPort);
+		System.out.println("Data Path: " + dataPath);
+		System.out.println("Max capacity: " + 0);
+		System.out.println("Remote Object Name: " + remoteObject);
 	}
 
 }

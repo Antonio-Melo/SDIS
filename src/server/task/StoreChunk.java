@@ -14,16 +14,23 @@ import server.main.Peer;
 public class StoreChunk implements Runnable {
 
 	public static void main(String[] args) throws IOException {
-		new Thread(new StoreChunk("1.0", 2, "fdahsjkhfuihsdf", 4, "fsdf")).start();
+		byte[] carlos = {(byte) 0xff,(byte)0xff, (byte)0xff};
+		new Thread(new StoreChunk(
+				"1.0",
+				2,
+				"fdahsjkhfuihsdf",
+				4,
+				carlos
+				)).start();
 	}
 
 	String version;
 	int senderID;
 	String fileID;
 	int chunkNo;
-	String body;
+	byte[] body;
 
-	public StoreChunk(String version, int senderID, String fileID, int chunkNo, String body) {
+	public StoreChunk(String version, int senderID, String fileID, int chunkNo, byte[] body) {
 		this.version = version;
 		this.senderID = senderID;
 		this.fileID = fileID;
@@ -48,9 +55,9 @@ public class StoreChunk implements Runnable {
 		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
 		if (this.senderID != Peer.serverID) {
 			System.out.println("vou criar chunk");
-			File dir = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.version);
+			File dir = new File(Peer.dataPath + "\\" + this.fileID);
 			dir.mkdirs();
-			File f = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.version + "\\" + this.chunkNo);
+			File f = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.chunkNo);
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("ja existia gg");
 				try {
@@ -63,13 +70,13 @@ public class StoreChunk implements Runnable {
 				try {
 					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {
 						f.createNewFile();
+						// TODO write body in file
 						sendStoredReply();
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-			// TODO write body in file
 		}
 	}
 
