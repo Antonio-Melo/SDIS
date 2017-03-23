@@ -65,6 +65,7 @@ public class StoreChunk implements Runnable {
 			}else {
 				System.out.println("criei o file");
 				try {
+					if(new File(Peer.dataPath).getUsableSpace() > 64 )
 					f.createNewFile();
 					sendStoredReply();
 				} catch (IOException e) {
