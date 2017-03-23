@@ -9,7 +9,7 @@ public class Peer {
 	public static int mdbPort = 9002;
 	public static String mdrAddress = "166.0.0.3";
 	public static int mdrPort = 9003;
-	public static String dataPath = ".\\" + serverID + "data";
+	public static String dataPath = "." + System.getProperty("file.separator") + serverID + "data";
 	public static int capacity = 0;
 	public static String remoteObject = "peer" + serverID;
 
