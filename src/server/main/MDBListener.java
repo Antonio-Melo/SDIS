@@ -34,7 +34,7 @@ public class MDBListener implements Runnable {
 							Integer.parseInt(cmdSplit[2]),
 							cmdSplit[3],
 						    Integer.parseInt(cmdSplit[4]),
-						    "fsdf"
+						    body
 						    )).start();
 				}
 			}
