@@ -19,6 +19,7 @@ public class PutChunk implements Runnable {
 				2,
 				"fdahsjkhfuihsdf",
 				4,
+				1,
 				carlos
 				)).start();
 	}
@@ -27,13 +28,15 @@ public class PutChunk implements Runnable {
 	private int senderID;
 	private String fileID;
 	private int chunkNo;
+	private int replicationDegree;
 	private byte[] body;
 
-	public PutChunk(String version, int senderID, String fileID, int chunkNo, byte[] body) {
+	public PutChunk(String version, int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
 		this.version = version;
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
+		this.replicationDegree = replicationDegree;
 		this.body = body;
 	}
 
@@ -70,6 +73,11 @@ public class PutChunk implements Runnable {
 					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {
 						f.createNewFile();
 						Files.write(f.toPath(), this.body);
+						try {
+							Thread.sleep((long)(Math.random() * 400));
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 						sendStoredReply();
 					}
 				} catch (IOException e) {

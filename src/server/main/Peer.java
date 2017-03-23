@@ -1,5 +1,12 @@
 package server.main;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
+import server.protocol.ClientInterface;
 import utils.Utils;
 
 public class Peer {
@@ -12,6 +19,7 @@ public class Peer {
 	public static String mdrAddress = "166.0.0.3";
 	public static int mdrPort = 9003;
 	public static String dataPath = "." + Utils.FS + serverID + "data";
+	public static String rdPath = "." + Utils.FS + serverID + "rd";
 	public static int capacity = 0;
 	public static String remoteObject = "peer" + serverID;
 
@@ -93,9 +101,20 @@ public class Peer {
 
 		MCListener mcListener = new MCListener();
 		MDBListener mdbListener = new MDBListener();
+		ClientAppListener clientAppListener = new ClientAppListener();
 
 		Thread mcThread = new Thread(mcListener);
 		Thread mdbThread = new Thread(mdbListener);
+        // Bind the remote object's stub in the registry
+        Registry registry;
+		try {
+			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(clientAppListener, 0);
+			registry = LocateRegistry.getRegistry();
+	        registry.bind(remoteObject, stub);
+		} catch (RemoteException | AlreadyBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		mcThread.start();
 		mdbThread.start();

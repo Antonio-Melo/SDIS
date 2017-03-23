@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import server.task.commonPeer.Delete;
+
 public class MCListener implements Runnable {
 
 	@Override
@@ -23,7 +25,11 @@ public class MCListener implements Runnable {
 				if(cmdSplit[0].equals("GETCHUNK")){
 					
 				} else if(cmdSplit[0].equals("DELETE")){
-					
+					new Thread(new Delete(
+							cmdSplit[1],
+							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[3]
+						    )).start();
 				} else if(cmdSplit[0].equals("REMOVED")){
 					
 				}
