@@ -54,10 +54,11 @@ public class StoreChunk implements Runnable {
 	public void run() {
 		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
 		if (this.senderID != Peer.serverID) {
+			String fileSeparator = System.getProperty("file.separator");
 			System.out.println("vou criar chunk");
-			File dir = new File(Peer.dataPath + "\\" + this.fileID);
+			File dir = new File(Peer.dataPath + fileSeparator + this.fileID);
 			dir.mkdirs();
-			File f = new File(Peer.dataPath + "\\" + this.fileID + "\\" + this.chunkNo);
+			File f = new File(Peer.dataPath + fileSeparator + this.fileID + fileSeparator + this.chunkNo);
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("ja existia gg");
 				try {
@@ -70,7 +71,6 @@ public class StoreChunk implements Runnable {
 				try {
 					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {
 						f.createNewFile();
-						// TODO write body in file
 						Files.write(f.toPath(), this.body);
 						sendStoredReply();
 					}
