@@ -2,44 +2,38 @@ package server.task.initiatorPeer;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.nio.file.Files;
 
 import server.main.Peer;
+import utils.Utils;
 
 public class Delete implements Runnable {
-	public static void main(String[] args) throws IOException {
-		new Thread(new Delete("1.0", 2, "fdahsjkhfuihsdf")).start();
-	}
 
 	String version;
-	int senderID;
 	String fileID;
 
-	public Delete(String version, int senderID, String fileID) {
+	public Delete(String version, String fileID) {
 		this.version = version;
-		this.senderID = senderID;
 		this.fileID = fileID;
 	}
 
 	@Override
 	public void run() {
-		System.out.println("vou apagar file");
-		File dir = new File(Peer.dataPath + Peer.FS + this.fileID);
-		if (dir.isDirectory()) {
-			for (File c : dir.listFiles())
-				try {
-					//Delete files inside directory
-					Files.delete(c.toPath());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			try {
-				//Delete directory when it is empty
-				Files.delete(dir.toPath());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		try {
+		DatagramSocket clientSocket = new DatagramSocket();
+		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
+		byte[] sendData = new String(
+				"DELETE " + this.version + " " + Peer.serverID + " " + this.fileID + " " + Utils.CRLF + Utils.CRLF)
+				.getBytes();
+		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
+		clientSocket.send(sendPacket);
+		clientSocket.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
+}
 }

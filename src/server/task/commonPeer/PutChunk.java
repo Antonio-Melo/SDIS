@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.nio.file.Files;
 
 import server.main.Peer;
+import utils.Utils;
 
 public class PutChunk implements Runnable {
 
@@ -40,7 +41,7 @@ public class PutChunk implements Runnable {
 		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
-				"STORED " + this.version + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " \r\n")
+				"STORED " + this.version + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " " + Utils.CRLF + Utils.CRLF)
 						.getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
@@ -53,9 +54,9 @@ public class PutChunk implements Runnable {
 		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
 		if (this.senderID != Peer.serverID) {
 			System.out.println("vou criar chunk");
-			File dir = new File(Peer.dataPath + Peer.FS + this.fileID);
+			File dir = new File(Peer.dataPath + Utils.FS + this.fileID);
 			dir.mkdirs();
-			File f = new File(Peer.dataPath + Peer.FS + this.fileID + Peer.FS + this.chunkNo);
+			File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNo);
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("ja existia gg");
 				try {
