@@ -1,6 +1,8 @@
 package server.main;
 
+import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -37,7 +39,7 @@ public class Peer {
 	 */
 	public static void main(String[] args) {
 		if(args.length != 7 && args.length != 9){
-			System.out.println("Usage: MainServer <Server ID> <MC Address> <MC Port> <MDB Address> <MDB Port> <MDR Address> <MDR Port> <Data Path> <RMI Remote Object Name>");
+			System.out.println("Usage: Peer <Server ID> <MC Address> <MC Port> <MDB Address> <MDB Port> <MDR Address> <MDR Port> [<Data Path> <RMI Remote Object Name>]");
 			return;
 		}
 
@@ -100,16 +102,16 @@ public class Peer {
 
 		MCListener mcListener = new MCListener();
 		MDBListener mdbListener = new MDBListener();
-		ClientAppListener clientAppListener = new ClientAppListener();
 
 		Thread mcThread = new Thread(mcListener);
 		Thread mdbThread = new Thread(mdbListener);
-        // Bind the remote object's stub in the registry
-        Registry registry;
 		try {
+		// Bind the remote object's stub in the registry
+			ClientAppListener clientAppListener = new ClientAppListener();
+
 			ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(clientAppListener, 0);
-			registry = LocateRegistry.getRegistry();
-	        registry.bind(remoteObject, stub);
+			Registry registry = LocateRegistry.getRegistry();
+			registry.bind(remoteObject, stub);
 		} catch (RemoteException | AlreadyBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

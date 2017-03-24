@@ -11,9 +11,9 @@ Melhoramento 1  |  |  | 05%
 Melhoramento 2  |  |  | 05%
 Melhoramento 3  |  |  | 05%
 Melhoramento 4  |  |  | 05%
-Cliente RMI  |  |  | 05%
+Cliente RMI  | X | X | 05%
 Demo  | X | X | 05%
-Total |  |  | 30%
+Total |  |  | 35%
 
 
 server side
