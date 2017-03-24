@@ -12,11 +12,11 @@ import utils.Utils;
 public class Peer {
 
 	public static int serverID = 1;
-	public static String mcAddress = "166.0.0.1";
+	public static String mcAddress = "224.0.0.1";
 	public static int mcPort = 9001;
-	public static String mdbAddress = "166.0.0.2";
+	public static String mdbAddress = "224.0.0.2";
 	public static int mdbPort = 9002;
-	public static String mdrAddress = "166.0.0.3";
+	public static String mdrAddress = "224.0.0.3";
 	public static int mdrPort = 9003;
 	public static String dataPath = "." + Utils.FS + serverID + "data";
 	public static String rdPath = "." + Utils.FS + serverID + "rd";
