@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import utils.*;
+import server.main.Peer;
+import server.task.initiatorPeer.PutChunk;
+
 public class Backup {
 
 	public Backup(String filePath, int replicationDeg) {
@@ -18,14 +22,32 @@ public class Backup {
 		try {
 			InputStream in = new FileInputStream(f);
 			
+			//Number of Chunks needed for the file
 			int numChunks = (int)(fileLength/64000)+1;
+			//Size of the last chunk
 			int lastChunkSize = (int)(fileLength%64000);
+			
+			//Create chunks and call PutChunks threads
 			for(int i = 0;i < numChunks;i++){
+				int numbytesRead;
+				//Special case 'Last Chunk'
 				if(i == numChunks-1){
 					chunk = new byte[lastChunkSize];
-				}
-				int numbytesRead = in.read(chunk, i*64000, 64000);
+					//Only reads if the size of the last Chunk is not 0, special case from multiples of 64000 in the file sizes
+					if(lastChunkSize != 0){
+						numbytesRead = in.read(chunk, i*64000, 64000);
+					}
+				}else numbytesRead = in.read(chunk, i*64000, 64000);
+				new Thread(new PutChunk(
+						"1.0",
+						Peer.serverID,
+						Utils.getFileID(f.getPath()),
+					    i,
+					    replicationDeg,
+					    chunk
+					    )).start();
 			}
+			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -33,9 +55,6 @@ public class Backup {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-
 	}
 
 }
