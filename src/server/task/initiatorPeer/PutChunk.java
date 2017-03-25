@@ -50,14 +50,17 @@ public class PutChunk implements Runnable{
 			MulticastSocket socket = new MulticastSocket(Peer.mdbPort);
 			socket.joinGroup(mdbGroup);
 			
-			//SEND PUTCHUNK msg
+			//Prepare byte[] msg
 			byte[] header = new String("PUTCHUNK "+ this.version + Utils.Space+ this.senderID + Utils.Space + this.fileID+ Utils.Space+ this.chunkNo+ Utils.Space + this.replicationDegree+Utils.Space+Utils.CRLF+Utils.CRLF).getBytes();
 			byte[] chunk = new byte[header.length + this.body.length];
 			System.arraycopy(header, 0, chunk, 0, header.length);
 			System.arraycopy(this.body, 0, chunk, header.length, this.body.length);
-			
+			System.out.println(chunk.toString());
 			DatagramPacket sendCommand = new DatagramPacket(chunk,chunk.length);
 			socket.send(sendCommand);
+			//Leaving group
+			socket.leaveGroup(mdbGroup);
+			socket.close();
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
