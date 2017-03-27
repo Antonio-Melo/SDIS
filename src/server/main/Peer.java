@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import server.protocol.ClientInterface;
 import utils.Utils;
@@ -19,12 +21,14 @@ public class Peer {
 	public static int mdbPort = 9002;
 	public static String mdrAddress = "224.0.0.3";
 	public static int mdrPort = 9003;
+	public static String remoteObject = "peer" + serverID;
 	public static String path;
 	public static String dataPath;
 	public static String rdFile;
 	public static String mdFile;
 	public static int capacity = 0;
-	public static String remoteObject = "peer" + serverID;
+	public static HashMap<String,int[]> rdMap = new HashMap<String,int[]>();
+	public static HashMap<String,ArrayList<Integer>> rdDetailedMap = new HashMap<String,ArrayList<Integer>>();
 
 	/**
 	 * Main service starter

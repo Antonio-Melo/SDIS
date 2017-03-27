@@ -56,17 +56,21 @@ public class PutChunk implements Runnable{
 			System.arraycopy(header, 0, chunk, 0, header.length);
 			System.arraycopy(this.body, 0, chunk, header.length, this.body.length);
 			System.out.println(chunk);
-			DatagramPacket sendCommand = new DatagramPacket(chunk,chunk.length);
-			
 
+			//RD
+			Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{this.replicationDegree,0});
+			
+			DatagramPacket sendCommand = new DatagramPacket(chunk,chunk.length);
 			mdbGroup = InetAddress.getByName(Peer.mdbAddress);
 			DatagramSocket socket = new DatagramSocket(Peer.mdbPort);
 			for(int i=1; i <= 5; i++){
 				socket.send(sendCommand);
 				Thread.sleep(400*i);
-				/*if(//condicao do replcation degree)
+				int[] rds = Peer.rdMap.get(this.fileID+this.chunkNo);
+				if(rds[0] <= rds[1]){
 						break;
-						*/
+				}
+						
 			}
 			socket.close();
 			
