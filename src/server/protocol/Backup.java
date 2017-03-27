@@ -39,7 +39,6 @@ public class Backup {
 					}
 				}else numbytesRead = in.read(chunk, i*64000, 64000);
 				new Thread(new PutChunk(
-						"1.0",
 						Peer.serverID,
 						Utils.getFileID(f.getPath()),
 					    i,

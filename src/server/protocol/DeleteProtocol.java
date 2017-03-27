@@ -8,7 +8,7 @@ public class DeleteProtocol {
 	
 	 public DeleteProtocol(String filePath){
 		 //for(int i=0; i < N_DELETES_TRIES; i++){
-			 new Thread(new Delete("1.0", Utils.getFileID(filePath))).start();
+			 new Thread(new Delete(Utils.getFileID(filePath))).start();
 		 //}
 	 }
 

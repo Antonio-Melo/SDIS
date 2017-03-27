@@ -15,7 +15,6 @@ public class PutChunk implements Runnable {
 	public static void main(String[] args) throws IOException {
 		byte[] carlos = {(byte) 0xff,(byte)0xff, (byte)0xff};
 		new Thread(new PutChunk(
-				"1.0",
 				2,
 				"fdahsjkhfuihsdf",
 				4,
@@ -24,7 +23,6 @@ public class PutChunk implements Runnable {
 				)).start();
 	}
 
-	private String version;
 	private int senderID;
 	private String fileID;
 	private int chunkNo;
@@ -32,7 +30,6 @@ public class PutChunk implements Runnable {
 	private byte[] body;
 
 	public PutChunk(String version, int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
-		this.version = version;
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
@@ -44,7 +41,7 @@ public class PutChunk implements Runnable {
 		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
-				"STORED " + this.version + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " " + Utils.CRLF + Utils.CRLF)
+				"STORED " + Peer.protocolVersion + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " " + Utils.CRLF + Utils.CRLF)
 						.getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
