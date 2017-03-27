@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import server.task.commonPeer.Delete;
+import server.task.commonPeer.Stored;
 
 public class MCListener implements Runnable {
 
@@ -26,12 +27,18 @@ public class MCListener implements Runnable {
 					
 				} else if(cmdSplit[0].equals("DELETE")){
 					new Thread(new Delete(
-							cmdSplit[1],
+							//cmdSplit[1],
 							Integer.parseInt(cmdSplit[2]),
 							cmdSplit[3]
 						    )).start();
 				} else if(cmdSplit[0].equals("REMOVED")){
 					
+				} else if(cmdSplit[0].equals("STORED")){
+					new Thread(new Stored(
+							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[3],
+							Integer.parseInt(cmdSplit[4])
+						    )).start();
 				}
 			}
 			socket.leaveGroup(mcGroup);

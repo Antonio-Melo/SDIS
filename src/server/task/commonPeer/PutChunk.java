@@ -65,6 +65,8 @@ public class PutChunk implements Runnable {
 					e.printStackTrace();
 				}
 			} else {
+				//RD
+				Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{this.replicationDegree,0});
 				System.out.println("criei o file");
 				try {
 					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {

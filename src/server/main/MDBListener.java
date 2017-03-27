@@ -30,7 +30,7 @@ public class MDBListener implements Runnable {
 					
 					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
 					new Thread(new PutChunk(
-							cmdSplit[1],
+							//cmdSplit[1],
 							Integer.parseInt(cmdSplit[2]),
 							cmdSplit[3],
 						    Integer.parseInt(cmdSplit[4]),
