@@ -30,7 +30,7 @@ public class PutChunk implements Runnable{
 	private int replicationDegree;
 	private byte[] body;
 	
-	public PutChunk(String version, int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
+	public PutChunk(int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;

@@ -1,11 +1,9 @@
 package server.task.initiatorPeer;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.nio.file.Files;
 
 import server.main.Peer;
 import utils.Utils;

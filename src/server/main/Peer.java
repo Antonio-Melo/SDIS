@@ -1,8 +1,6 @@
 package server.main;
 
-import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,8 +19,10 @@ public class Peer {
 	public static int mdbPort = 9002;
 	public static String mdrAddress = "224.0.0.3";
 	public static int mdrPort = 9003;
-	public static String dataPath = "." + Utils.FS + serverID + "data";
-	public static String rdPath = "." + Utils.FS + serverID + "rd";
+	public static String path;
+	public static String dataPath;
+	public static String rdFile;
+	public static String mdFile;
 	public static int capacity = 0;
 	public static String remoteObject = "peer" + serverID;
 
@@ -40,7 +40,7 @@ public class Peer {
 	 * 9 - MDR Port
 	 */
 	public static void main(String[] args) {
-		if(args.length != 7 && args.length != 9){
+		if(args.length != 9){
 			System.out.println("Usage: Peer <Protocol Version> <Server ID> <RMI Remote Object Name> <MC Address> <MC Port> <MDB Address> <MDB Port> <MDR Address> <MDR Port>");
 			return;
 		}
@@ -49,11 +49,13 @@ public class Peer {
 		if(protocolVersion == null){
 			System.out.println("Null protocol version");
 		}
+		
 		serverID = Integer.parseInt(args[1]);
 		if (serverID < 0){
 			System.out.println("Server ID wrong!");
 			return;
 		}
+		
 		remoteObject = args[2];
 		if (remoteObject == null){
 			System.out.println("Remote Object Name wrong!");
@@ -94,8 +96,11 @@ public class Peer {
 			System.out.println("MDR Port wrong!");
 			return;
 		}
-		//Coisas parvas do telmo
-		dataPath = args[9];
+
+		path = "." + Utils.FS + serverID;
+		dataPath = path + Utils.FS + "data";
+		rdFile = path + Utils.FS + "rd";
+		mdFile = path + Utils.FS + "md";
 
 		System.out.println("Starting services...");
 

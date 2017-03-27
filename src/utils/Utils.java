@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import server.main.Peer;
+
 public final class Utils {
 
 	public static final String FS = System.getProperty("file.separator");
@@ -48,6 +50,13 @@ public final class Utils {
 	    return new String(hexChars);
 	}
 
-
+	public static final boolean loadRD(){
+		File file = new File(Peer.dataPath + FS + "rd");
+		return true;
+	}
+	
+	public static final boolean saveRD(){
+		return true;
+	}
 
 }
