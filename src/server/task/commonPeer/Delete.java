@@ -9,15 +9,13 @@ import utils.Utils;
 
 public class Delete implements Runnable {
 	public static void main(String[] args) throws IOException {
-		new Thread(new Delete("1.0", 2, "fdahsjkhfuihsdf")).start();
+		new Thread(new Delete( 2, "fdahsjkhfuihsdf")).start();
 	}
 
-	String version;
 	int senderID;
 	String fileID;
 
-	public Delete(String version, int senderID, String fileID) {
-		this.version = version;
+	public Delete(int senderID, String fileID) {
 		this.senderID = senderID;
 		this.fileID = fileID;
 	}
