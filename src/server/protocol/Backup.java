@@ -26,6 +26,8 @@ public class Backup {
 			int numChunks = (int)(fileLength/64000)+1;
 			//Size of the last chunk
 			int lastChunkSize = (int)(fileLength%64000);
+			//get File ID
+			String fileID = Utils.getFileID(f.getPath());
 			
 			//Create chunks and call PutChunks threads
 			for(int i = 0;i < numChunks;i++){
@@ -41,7 +43,7 @@ public class Backup {
 				System.out.println("VOU ENVIAR PUTCHUNK" + i + "/" + (numChunks - 1));
 				new Thread(new PutChunk(
 						Peer.serverID,
-						Utils.getFileID(f.getPath()),
+						fileID,
 					    i,
 					    replicationDeg,
 					    chunk
