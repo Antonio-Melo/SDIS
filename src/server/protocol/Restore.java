@@ -14,7 +14,7 @@ public class Restore {
 			// 1- Get fileId from md file from filePath
 			new Thread(new GetChunk(Peer.serverID,"1",chunkNumber));
 			chunkNumber++;	
-		}while();
+		}while(1==1);
 	 }
 
 }

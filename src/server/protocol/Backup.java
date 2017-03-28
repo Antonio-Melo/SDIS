@@ -35,7 +35,7 @@ public class Backup {
 					chunk = new byte[lastChunkSize];
 					//Only reads if the size of the last Chunk is not 0, special case from multiples of 64000 in the file sizes
 					if(lastChunkSize != 0){
-						numbytesRead = in.read(chunk, i*64000, 64000);
+						numbytesRead = in.read(chunk, i*64000, lastChunkSize);
 					}
 				}else numbytesRead = in.read(chunk, i*64000, 64000);
 				new Thread(new PutChunk(

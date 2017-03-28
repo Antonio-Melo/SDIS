@@ -60,19 +60,18 @@ public class PutChunk implements Runnable{
 			//RD
 			Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{this.replicationDegree,0});
 			
-			DatagramPacket sendCommand = new DatagramPacket(chunk,chunk.length);
-			mdbGroup = InetAddress.getByName(Peer.mdbAddress);
-			DatagramSocket socket = new DatagramSocket(Peer.mdbPort);
-			for(int i=1; i <= 5; i++){
-				socket.send(sendCommand);
-				Thread.sleep(400*i);
-				int[] rds = Peer.rdMap.get(this.fileID+this.chunkNo);
-				if(rds[0] <= rds[1]){
-						break;
-				}
-						
-			}
-			socket.close();
+			DatagramSocket clientSocket = new DatagramSocket();
+			InetAddress IPAddress = InetAddress.getByName(Peer.mdbAddress);
+			DatagramPacket sendPacket = new DatagramPacket(chunk, chunk.length, IPAddress, Peer.mdbPort);
+			//for(int i=1; i <= 5; i++){
+				clientSocket.send(sendPacket);
+				//Thread.sleep(400*i);
+				//int[] rds = Peer.rdMap.get(this.fileID+this.chunkNo);
+				//if(rds[0] <= rds[1]){
+				//		break;
+				//}
+			//}
+			clientSocket.close();
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -80,10 +79,10 @@ public class PutChunk implements Runnable{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} //catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+		//}
 		
 		
 		
