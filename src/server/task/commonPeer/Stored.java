@@ -32,6 +32,9 @@ public class Stored implements Runnable {
 			ArrayList<Integer> detailed = Peer.rdDetailedMap.get(this.fileID + this.chunkNo);
 			if(!Arrays.asList(detailed).contains(this.senderID)){
 				Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{rds[0], rds[1]+1});
+				if(detailed == null){
+					detailed = new ArrayList<Integer>();
+				}
 				detailed.add(this.senderID);
 				Peer.rdDetailedMap.put(this.fileID + this.chunkNo, detailed);
 			}

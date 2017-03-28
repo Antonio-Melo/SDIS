@@ -35,9 +35,10 @@ public class Backup {
 					chunk = new byte[lastChunkSize];
 					//Only reads if the size of the last Chunk is not 0, special case from multiples of 64000 in the file sizes
 					if(lastChunkSize != 0){
-						numbytesRead = in.read(chunk, i*64000, lastChunkSize);
+						numbytesRead = in.read(chunk, 0, lastChunkSize);
 					}
-				}else numbytesRead = in.read(chunk, i*64000, 64000);
+				}else numbytesRead = in.read(chunk, 0, 64000);
+				System.out.println("VOU ENVIAR PUTCHUNK" + i + "/" + (numChunks - 1));
 				new Thread(new PutChunk(
 						Peer.serverID,
 						Utils.getFileID(f.getPath()),
@@ -45,7 +46,9 @@ public class Backup {
 					    replicationDeg,
 					    chunk
 					    )).start();
+				System.out.println("ja mandei o carlos enviar o putchunk" + i + "/" + (numChunks - 1));
 			}
+			System.out.println("sai do siqlooooooooo!");
 			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

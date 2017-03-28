@@ -7,7 +7,7 @@ start rmiregistry
 cd ..
 
 #sleep to allow rmi registry to start
-sleep 8
+sleep 15
 
 #run peer(s)
 echo "Starting peer(s)..."
