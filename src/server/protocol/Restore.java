@@ -1,8 +1,7 @@
 package server.protocol;
 
 import server.main.Peer;
-import server.task.initiatorPeer.PutChunk;
-import server.task.commonPeer.GetChunk;
+import server.task.initiatorPeer.GetChunk;
 import utils.Utils;
 
 public class Restore {
