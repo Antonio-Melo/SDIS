@@ -105,6 +105,10 @@ public class Peer {
 		dataPath = path + Utils.FS + "data";
 		rdFile = path + Utils.FS + "rd";
 		mdFile = path + Utils.FS + "md";
+		
+		System.out.println("Loading resources...");
+		
+		Utils.loadRD();
 
 		System.out.println("Starting services...");
 
