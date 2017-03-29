@@ -11,7 +11,16 @@ public class Restore {
 		do{
 			//TODO
 			// 1- Get fileId from md file from filePath
-			new Thread(new GetChunk(Peer.serverID,"1",chunkNumber));
+			GetChunk getChunk = new GetChunk(Peer.serverID,"1",chunkNumber);
+			Thread getChunkThread = new Thread(getChunk);
+			getChunkThread.start();
+			try {
+				getChunkThread.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				break;
+			}
 			chunkNumber++;	
 		}while(1==1);
 	 }
