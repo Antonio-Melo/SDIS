@@ -1,1 +1,3 @@
-cd binrmiregistrycd ..
+cd bin
+gnome-terminal -e rmiregistry
+cd ..
