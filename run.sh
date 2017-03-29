@@ -1,5 +1,5 @@
 #compile server peer and client
-sh ./compile_all.sh
+#./compile_all.sh
 
 #start rmiregistry
 #cd bin
