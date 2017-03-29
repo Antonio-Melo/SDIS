@@ -1,13 +1,13 @@
 #compile server peer and client
-sh ./compile_all.sh
+#./compile_all.sh
 
 #start rmiregistry
-cd bin
-start rmiregistry
-cd ..
+#cd bin
+#start rmiregistry
+#cd ..
 
 #sleep to allow rmi registry to start
-sleep 15
+#sleep 15
 
 #run peer(s)
 echo "Starting peer(s)..."
