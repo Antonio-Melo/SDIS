@@ -21,6 +21,9 @@ public class Restore {
 				e.printStackTrace();
 				break;
 			}
+			/*if(this.chunk != null){
+				//Guardar o chunk na pasta certa
+			}else ; //Não recebeu*/
 			chunkNumber++;	
 		}while(1==1);
 	 }
