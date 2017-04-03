@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.util.Arrays;
 
 import server.main.Peer;
+import server.task.commonPeer.GetChunk.ReceiveChunk;
 import utils.Utils;
 
 public class GetChunk implements Runnable{
@@ -21,6 +24,11 @@ public class GetChunk implements Runnable{
 	private String fileID;
 	private int chunkNumber;
 	private byte[] chunk;
+	private boolean chunkAlreadySent = false;
+
+	public void setChunkAlreadySent(boolean chunkAlreadySent) {
+		this.chunkAlreadySent = chunkAlreadySent;
+	}
 
 	public GetChunk(int senderID,String fileID,int chunkNumber){
 		this.senderID = senderID;
@@ -40,16 +48,21 @@ public class GetChunk implements Runnable{
 				this.chunk = Files.readAllBytes(f.toPath());
 				//CHUNK <Version> <SenderId> <FileId> <ChunkNo> <CRLF><CRLF><Body>
 				byte[] msg = new String("CHUNK"+Utils.Space+"1.0"+Utils.Space+this.senderID+Utils.Space+this.fileID+Utils.Space+this.chunkNumber+Utils.Space+Utils.CRLF+Utils.CRLF+this.chunk).getBytes();
-
-				InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
-				DatagramSocket mdrSocket = new DatagramSocket();
-				//Wait random time between 0 400ms
-				mdrSocket.setSoTimeout((int)Math.random()*400);
-				DatagramPacket p = new DatagramPacket();
-				mdrSocket.receive(p);
 				
 				
-				DatagramPacket sendChunk = new DatagramPacket(msg,msg.length,mdrGroup,Peer.mdrPort);
+				//Call RECEIVECHUNK
+				Thread receivedThread = new Thread(new ReceiveChunk());
+				receivedThread.start();
+				receivedThread.join((long)Math.random()*400);
+				if(receivedThread.isAlive()) receivedThread.interrupt();
+				
+				if(!this.chunkAlreadySent){
+					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
+					DatagramSocket mdrSocket = new DatagramSocket();
+					
+					DatagramPacket sendChunk = new DatagramPacket(msg,msg.length,mdrGroup,Peer.mdrPort);
+					mdrSocket.close();
+				}
 
 
 			} catch (UnknownHostException e) {
@@ -63,6 +76,35 @@ public class GetChunk implements Runnable{
 				e.printStackTrace();
 			}
 
+		}
+	}
+	
+	class ReceiveChunk implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
+				MulticastSocket mdrSocket = new MulticastSocket(Peer.mdrPort);
+				byte[] receiveMsg = new byte[70000];
+				DatagramPacket receiveCommand = new DatagramPacket(receiveMsg,receiveMsg.length);
+				mdrSocket.joinGroup(mdrGroup);
+				mdrSocket.setSoTimeout(400);
+				
+				while(!Thread.currentThread().isInterrupted()){
+					mdrSocket.receive(receiveCommand);
+					String receivedCmdString = new String(receiveCommand.getData(), receiveCommand.getOffset(), receiveCommand.getLength());
+					String cmdSplit[] = receivedCmdString.split("\\s+");
+					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(chunkNumber)){
+						setChunkAlreadySent(true);
+						break;
+					}
+				}
+				mdrSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
