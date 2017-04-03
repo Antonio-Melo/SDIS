@@ -54,11 +54,6 @@ public class GetChunk implements Runnable{
 			receivedThread.join(400);
 			if(receivedThread.isAlive()) receivedThread.interrupt();
 			
-			if(this.chunk != null){
-				//Guardar o chunk na pasta certa
-			}else ; //Não recebeu
-			
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
