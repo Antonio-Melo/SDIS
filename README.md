@@ -6,14 +6,14 @@ Tarefa  | Init-Peer | Peer | Peso
 Backup  | X | X | 40%
 Restore  | X | X | 10%
 Delete  | X | X | 05%
-Space Reclaim  | X |  | 15%
+Space Reclaim  | X | X | 15%
 Melhoramento 1  |  |  | 05%
 Melhoramento 2  |  |  | 05%
 Melhoramento 3  |  |  | 05%
 Melhoramento 4  |  |  | 05%
 Cliente RMI  | X | X | 05%
 Demo  | X | X | 05%
-Total |  |  | 72.5%
+Total |  |  | 80%
 
 
 server side
