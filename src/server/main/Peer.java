@@ -107,7 +107,7 @@ public class Peer {
 		mdFile = path + Utils.FS + "md";
 		
 		System.out.println("Loading resources...");
-		
+		Utils.initFileSystem();
 		Utils.loadRD();
 
 		System.out.println("Starting services...");
@@ -131,6 +131,7 @@ public class Peer {
 
 		mcThread.start();
 		mdbThread.start();
+		System.out.println(Utils.getFileIDfromMD("BICHAO"));
 
 		System.out.println("Services running...");
 
