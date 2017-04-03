@@ -50,7 +50,7 @@ public class Backup {
 					    )).start();
 				System.out.println("ja mandei o carlos enviar o putchunk" + i + "/" + (numChunks - 1));
 			}
-			System.out.println("sai do siqlooooooooo!");
+
 			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

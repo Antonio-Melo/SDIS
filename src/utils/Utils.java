@@ -1,10 +1,12 @@
 package utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -25,7 +27,7 @@ public final class Utils {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
 	public static void main(String[] args) {
-		getFileID("C:\\Users\\Telmo\\Desktop\\18515482.jpg");
+		writeMD("BICHAO", 840923139, "loco");
 	}
 
 	public static final String getFileID(String filePath){
@@ -83,20 +85,87 @@ public final class Utils {
 
 	public static final boolean saveRD(){
 		try{
-	    PrintWriter writer = new PrintWriter(Peer.rdFile, "UTF-8");
-	    Iterator it = Peer.rdMap.entrySet().iterator();
-	    while (it.hasNext()) {
-	        HashMap.Entry<String,int[]> pair = (HashMap.Entry)it.next();
-	        writer.println(pair.getKey());
-	        writer.println(pair.getValue()[0]);
-	        writer.println(pair.getValue()[1]);
-	        it.remove();
-	    }
-	    writer.close();
-		return true;
-	} catch (IOException e) {
-		return false;
+			PrintWriter writer = new PrintWriter(Peer.rdFile, "UTF-8");
+			Iterator it = Peer.rdMap.entrySet().iterator();
+			while (it.hasNext()) {
+				HashMap.Entry<String,int[]> pair = (HashMap.Entry)it.next();
+				writer.println(pair.getKey());
+				writer.println(pair.getValue()[0]);
+				writer.println(pair.getValue()[1]);
+				it.remove();
+			}
+			writer.close();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
 	}
+
+	public static final boolean writeMD(String filePath, long lastModified, String fileID){
+		try{
+		    PrintWriter writer = new PrintWriter(new FileOutputStream(
+		    	    new File(Peer.mdFile), 
+		    	    true /* append = true */));
+			writer.println(filePath);
+			writer.println(lastModified);
+			writer.println(fileID);
+			writer.close();
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	public static final String getFileIDfromMD(String filePath){
+		String fileID = null;
+		long lastModified = 0;
+		try{
+			FileInputStream fis = new FileInputStream(Peer.mdFile);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+			String tmpFilePath = reader.readLine();
+			long tmpLastModified = 0;
+			String tmpFileID = null;
+			while(tmpFilePath != null){
+				tmpLastModified = Integer.parseInt(reader.readLine());
+				tmpFileID = reader.readLine();
+				if(tmpFilePath.equals(filePath)){
+					if(lastModified < tmpLastModified || lastModified == 0){
+						lastModified = tmpLastModified;
+						fileID = tmpFileID;
+					}
+				}
+
+				tmpFilePath = reader.readLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return fileID;
+	}
+
+	public static final boolean initFileSystem(){
+		File dir = new File(Peer.dataPath);
+		dir.mkdirs();
+		File rdFile = new File(Peer.rdFile);
+		File mdFile = new File(Peer.mdFile);
+		try {
+			if (!rdFile.exists()) {
+
+				rdFile.createNewFile();
+
+			}
+			if (!mdFile.exists()) {
+				mdFile.createNewFile();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+		return true;
 	}
 
 }
