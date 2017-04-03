@@ -30,15 +30,14 @@ public class GetChunk implements Runnable{
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNumber = chunkNumber;
-		this.chunk = null;
+		this.setChunk(null);
 	}
 
 	@Override
 	public void run() {
 		//Creating GETCHUNK msg
 		//GETCHUNK <Version> <SenderId> <FileId> <ChunkNo> <CRLF><CRLF>
-		byte[] msg = new String("GETCHUNK"+Utils.Space+this.senderID+Utils.Space+this.fileID+Utils.Space+this.chunkNumber+Utils.Space+Utils.CRLF+Utils.CRLF).getBytes();
-		
+		byte[] msg = new String("GETCHUNK"+Utils.Space+"1.0"+Utils.Space+this.senderID+Utils.Space+this.fileID+Utils.Space+this.chunkNumber+Utils.Space+Utils.CRLF+Utils.CRLF).getBytes();		
 		try {
 			//Group and socket creations
 			InetAddress mcGroup = InetAddress.getByName(Peer.mcAddress);
@@ -54,6 +53,12 @@ public class GetChunk implements Runnable{
 			receivedThread.start();
 			receivedThread.join(400);
 			if(receivedThread.isAlive()) receivedThread.interrupt();
+			
+			if(this.chunk != null){
+				//Guardar o chunk na pasta certa
+			}else ; //Não recebeu
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,6 +69,14 @@ public class GetChunk implements Runnable{
 		
 	}
 	
+	public byte[] getChunk() {
+		return chunk;
+	}
+
+	public void setChunk(byte[] chunk) {
+		this.chunk = chunk;
+	}
+
 	class ReceiveChunk implements Runnable {
 
 		@Override
@@ -80,10 +93,12 @@ public class GetChunk implements Runnable{
 					mdrSocket.receive(receiveCommand);
 					String receivedCmdString = new String(receiveCommand.getData(), receiveCommand.getOffset(), receiveCommand.getLength());
 					String cmdSplit[] = receivedCmdString.split("\\s+");
-					if(cmdSplit[0].equals("CHUNK") && cmdSplit[2].equals(fileID) && cmdSplit[2].equals(chunkNumber)){
+					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(chunkNumber)){
 						int bodyIndex = receivedCmdString.indexOf(Utils.CRLF+Utils.CRLF)+4;
-						chunk = Arrays.copyOfRange(receiveCommand.getData(),bodyIndex,receiveCommand.getLength());
-						break;
+						if(bodyIndex >=0){
+							setChunk(Arrays.copyOfRange(receiveCommand.getData(),bodyIndex,receiveCommand.getLength()));
+							break;
+						}
 					}
 				}
 				mdrSocket.close();
