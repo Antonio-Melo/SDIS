@@ -27,9 +27,9 @@ public class Stored implements Runnable {
 
 	@Override
 	public void run() {
-		int[] rds = Peer.rdMap.get(this.fileID + this.chunkNo);
+		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 		if(rds != null){
-			ArrayList<Integer> detailed = Peer.rdDetailedMap.get(this.fileID + this.chunkNo);
+			ArrayList<Integer> detailed = Peer.rdDetailedMap.get(this.fileID + Utils.FS + this.chunkNo);
 			if(!Arrays.asList(detailed).contains(this.senderID)){
 				Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{rds[0], rds[1]+1});
 				if(detailed == null){

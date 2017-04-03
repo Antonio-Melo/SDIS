@@ -26,7 +26,7 @@ public class Peer {
 	public static String dataPath;
 	public static String rdFile;
 	public static String mdFile;
-	public static int capacity = 0;
+	public static long capacity = 0; //Capacity in bytes
 	public static HashMap<String,int[]> rdMap = new HashMap<String,int[]>();
 	public static HashMap<String,ArrayList<Integer>> rdDetailedMap = new HashMap<String,ArrayList<Integer>>();
 

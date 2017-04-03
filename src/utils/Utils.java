@@ -13,9 +13,16 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import server.main.Peer;
 
@@ -103,9 +110,9 @@ public final class Utils {
 
 	public static final boolean writeMD(String filePath, long lastModified, String fileID){
 		try{
-		    PrintWriter writer = new PrintWriter(new FileOutputStream(
-		    	    new File(Peer.mdFile), 
-		    	    true /* append = true */));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(
+					new File(Peer.mdFile), 
+					true /* append = true */));
 			writer.println(filePath);
 			writer.println(lastModified);
 			writer.println(fileID);
@@ -163,9 +170,24 @@ public final class Utils {
 			e.printStackTrace();
 		}
 
-
-
 		return true;
+	}
+
+	public static LinkedHashMap<String, int[]> sortMostReplicated() {
+	    List<Map.Entry<String, int[]>> list = new ArrayList<Map.Entry<String, int[]>>(Peer.rdMap.entrySet());
+
+	    Collections.sort(list, new Comparator<Map.Entry<String, int[]>>() {
+	        public int compare(Map.Entry<String, int[]> a, Map.Entry<String, int[]> b) {
+	            return Integer.compare((a.getValue()[1] - a.getValue()[0]),(b.getValue()[1] - b.getValue()[0]));
+	        }
+	    });
+
+	    LinkedHashMap<String, int[]> result = new LinkedHashMap<String, int[]>();
+	    for (Entry<String, int[]> entry : list) {
+	        result.put(entry.getKey(), entry.getValue());
+	    }
+
+	    return result;
 	}
 
 }
