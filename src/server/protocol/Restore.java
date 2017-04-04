@@ -26,7 +26,7 @@ public class Restore {
 			}
 			byte[] chunk = null;
 			do{
-				GetChunk getChunk = new GetChunk(Peer.serverID,Peer.protocolVersion,chunkNumber);
+				GetChunk getChunk = new GetChunk(Peer.serverID,fileId,chunkNumber);
 				Thread getChunkThread = new Thread(getChunk);
 				getChunkThread.start();
 
@@ -45,10 +45,14 @@ public class Restore {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}else break;
+				}else{
+					System.out.println("bazei o chunk ta nulo!!!");
+					break;
+				}
 
 				chunkNumber++;
 			}while(chunk.length != 64000);
+			System.out.println("bazei supostamente acabou");
 		}
 	}
 

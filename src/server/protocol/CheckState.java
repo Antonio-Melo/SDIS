@@ -33,7 +33,7 @@ public class CheckState {
 				state += "FileId: " + FileId +"\n";
 				state += "Desired replication degree: "+ Peer.rdMap.get(FileId+Utils.FS+0)[0];
 				state += "Chunk files:";
-				for(int i = 0; i <Peer.rdMap.get(FileId+Utils.FS+0))
+				//for(int i = 0; i <Peer.rdMap.get(FileId+Utils.FS+0))
 				state += "-----------------------------\n";
 				FilePath = reader.readLine();
 			}

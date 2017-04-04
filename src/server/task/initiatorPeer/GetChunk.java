@@ -88,9 +88,16 @@ public class GetChunk implements Runnable{
 					mdrSocket.receive(receiveCommand);
 					String receivedCmdString = new String(receiveCommand.getData(), receiveCommand.getOffset(), receiveCommand.getLength());
 					String cmdSplit[] = receivedCmdString.split("\\s+");
-					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(chunkNumber)){
+					System.out.println("recebi cenas" + cmdSplit[3]);
+					System.out.println(fileID);
+					System.out.println("recebi cenas" + cmdSplit[4]);
+					System.out.println(chunkNumber);
+					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(Integer.toString(chunkNumber))){
 						int bodyIndex = receivedCmdString.indexOf(Utils.CRLF+Utils.CRLF)+4;
+
+						System.out.println("recebi o chunk1");
 						if(bodyIndex >=0){
+							System.out.println("recebi o chunk2");
 							setChunk(Arrays.copyOfRange(receiveCommand.getData(),bodyIndex,receiveCommand.getLength()));
 							break;
 						}
@@ -98,7 +105,6 @@ public class GetChunk implements Runnable{
 				}
 				mdrSocket.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -22,7 +22,6 @@ public class GetChunk implements Runnable{
 	private int senderID;
 	private String fileID;
 	private int chunkNumber;
-	private byte[] chunk;
 	private boolean chunkAlreadySent = false;
 
 	public void setChunkAlreadySent(boolean chunkAlreadySent) {
@@ -43,23 +42,34 @@ public class GetChunk implements Runnable{
 		if (f.exists() && !f.isDirectory()) {
 			//SEND CHUNK
 			try {
+				byte[] header = new String("CHUNK"+Utils.Space
+						+ Peer.protocolVersion + Utils.Space
+						+ this.senderID + Utils.Space
+						+ this.fileID+ Utils.Space
+						+ this.chunkNumber + Utils.Space
+						+ Utils.CRLF + Utils.CRLF).getBytes();
 				//Get body from file
-				this.chunk = Files.readAllBytes(f.toPath());
+				byte[] chunk = Files.readAllBytes(f.toPath());
+				byte[] msg = new byte[header.length + chunk.length];
 				//CHUNK <Version> <SenderId> <FileId> <ChunkNo> <CRLF><CRLF><Body>
-				byte[] msg = new String("CHUNK"+Utils.Space+"1.0"+Utils.Space+this.senderID+Utils.Space+this.fileID+Utils.Space+this.chunkNumber+Utils.Space+Utils.CRLF+Utils.CRLF+this.chunk).getBytes();
-				
+				System.arraycopy(header, 0, msg, 0, header.length);
+				System.arraycopy(chunk, 0, msg, header.length, chunk.length);
+				System.out.println(header.length);
+				System.out.println(chunk.length);
+				System.out.println(msg.length);
 				
 				//Call RECEIVECHUNK
 				/*Thread receivedThread = new Thread(new ReceiveChunk());
 				receivedThread.start();
 				receivedThread.join((long)Math.random()*400);
 				if(receivedThread.isAlive()) receivedThread.interrupt();*/
-				
+				System.out.println("Vou enviar o chunk");
 				if(!this.chunkAlreadySent){
 					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
 					DatagramSocket mdrSocket = new DatagramSocket();
 					
 					DatagramPacket sendChunk = new DatagramPacket(msg,msg.length,mdrGroup,Peer.mdrPort);
+					mdrSocket.send(sendChunk);
 					mdrSocket.close();
 				}
 
