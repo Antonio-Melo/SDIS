@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 
 import server.main.Peer;
-import server.task.commonPeer.GetChunk.ReceiveChunk;
 import utils.Utils;
 
 public class GetChunk implements Runnable{
@@ -51,10 +50,10 @@ public class GetChunk implements Runnable{
 				
 				
 				//Call RECEIVECHUNK
-				Thread receivedThread = new Thread(new ReceiveChunk());
+				/*Thread receivedThread = new Thread(new ReceiveChunk());
 				receivedThread.start();
 				receivedThread.join((long)Math.random()*400);
-				if(receivedThread.isAlive()) receivedThread.interrupt();
+				if(receivedThread.isAlive()) receivedThread.interrupt();*/
 				
 				if(!this.chunkAlreadySent){
 					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
@@ -71,10 +70,10 @@ public class GetChunk implements Runnable{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InterruptedException e) {
+			} /*catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 
 		}
 	}

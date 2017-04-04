@@ -32,7 +32,7 @@ public class TestApp {
 				}
 			} else if(args.length == 2){
 				if(args[1].equals("STATE")){
-					stub.state();
+					System.out.println(stub.state());
 				}
 			}
 		} catch (Exception e) {
