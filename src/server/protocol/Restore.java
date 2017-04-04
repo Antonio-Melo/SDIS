@@ -40,7 +40,7 @@ public class Restore {
 				chunk = getChunk.getChunk();
 				if(chunk != null){
 					try {
-						output.write(chunk, chunkNumber*64000, chunk.length);
+						output.write(chunk, 0, chunk.length);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -50,8 +50,10 @@ public class Restore {
 					break;
 				}
 
+				System.out.println("este chunk que recebi tem size" + chunk.length);
+
 				chunkNumber++;
-			}while(chunk.length != 64000);
+			}while(chunk.length == 64000);
 			System.out.println("bazei supostamente acabou");
 		}
 	}

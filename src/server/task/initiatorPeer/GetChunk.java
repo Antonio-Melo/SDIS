@@ -51,7 +51,7 @@ public class GetChunk implements Runnable{
 			//Call RECEIVECHUNK
 			Thread receivedThread = new Thread(new ReceiveChunk());
 			receivedThread.start();
-			receivedThread.join(400);
+			receivedThread.join(1000);
 			if(receivedThread.isAlive()) receivedThread.interrupt();
 			
 		} catch (IOException e) {
@@ -82,7 +82,7 @@ public class GetChunk implements Runnable{
 				byte[] receiveMsg = new byte[70000];
 				DatagramPacket receiveCommand = new DatagramPacket(receiveMsg,receiveMsg.length);
 				mdrSocket.joinGroup(mdrGroup);
-				mdrSocket.setSoTimeout(400);
+				mdrSocket.setSoTimeout(1000);
 				
 				while(!Thread.currentThread().isInterrupted()){
 					mdrSocket.receive(receiveCommand);
@@ -97,8 +97,8 @@ public class GetChunk implements Runnable{
 
 						System.out.println("recebi o chunk1");
 						if(bodyIndex >=0){
-							System.out.println("recebi o chunk2");
 							setChunk(Arrays.copyOfRange(receiveCommand.getData(),bodyIndex,receiveCommand.getLength()));
+							System.out.println("recebi o chunk2 com length" + chunk.length);
 							break;
 						}
 					}

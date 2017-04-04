@@ -59,10 +59,10 @@ public class GetChunk implements Runnable{
 				System.out.println(msg.length);
 				
 				//Call RECEIVECHUNK
-				/*Thread receivedThread = new Thread(new ReceiveChunk());
+				Thread receivedThread = new Thread(new ReceiveChunk());
 				receivedThread.start();
 				receivedThread.join((long)Math.random()*400);
-				if(receivedThread.isAlive()) receivedThread.interrupt();*/
+				if(receivedThread.isAlive()) receivedThread.interrupt();
 				System.out.println("Vou enviar o chunk");
 				if(!this.chunkAlreadySent){
 					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
@@ -80,10 +80,10 @@ public class GetChunk implements Runnable{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} /*catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 
 		}
 	}
@@ -104,7 +104,7 @@ public class GetChunk implements Runnable{
 					mdrSocket.receive(receiveCommand);
 					String receivedCmdString = new String(receiveCommand.getData(), receiveCommand.getOffset(), receiveCommand.getLength());
 					String cmdSplit[] = receivedCmdString.split("\\s+");
-					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(chunkNumber)){
+					if(cmdSplit[0].equals("CHUNK") && cmdSplit[3].equals(fileID) && cmdSplit[4].equals(Integer.toString(chunkNumber))){
 						setChunkAlreadySent(true);
 						break;
 					}
@@ -112,7 +112,7 @@ public class GetChunk implements Runnable{
 				mdrSocket.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}
