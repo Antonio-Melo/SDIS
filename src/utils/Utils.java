@@ -134,7 +134,7 @@ public final class Utils {
 			long tmpLastModified = 0;
 			String tmpFileID = null;
 			while(tmpFilePath != null){
-				tmpLastModified = Integer.parseInt(reader.readLine());
+				tmpLastModified = Long.parseLong(reader.readLine());
 				tmpFileID = reader.readLine();
 				if(tmpFilePath.equals(filePath)){
 					if(lastModified < tmpLastModified || lastModified == 0){
