@@ -6,6 +6,8 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import server.task.commonPeer.Delete;
+import server.task.commonPeer.GetChunk;
+import server.task.commonPeer.Removed;
 import server.task.commonPeer.Stored;
 
 public class MCListener implements Runnable {
@@ -24,7 +26,11 @@ public class MCListener implements Runnable {
 				socket.receive(receivedCmd);
 				String cmdSplit[] = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength()).split("\\s+");
 				if(cmdSplit[0].equals("GETCHUNK")){
-					
+					new Thread(new GetChunk(
+							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[3],
+							Integer.parseInt(cmdSplit[4])
+						    )).start();
 				} else if(cmdSplit[0].equals("DELETE")){
 					new Thread(new Delete(
 							//cmdSplit[1],
@@ -32,7 +38,11 @@ public class MCListener implements Runnable {
 							cmdSplit[3]
 						    )).start();
 				} else if(cmdSplit[0].equals("REMOVED")){
-					
+					new Thread(new Removed(
+							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[3],
+							Integer.parseInt(cmdSplit[4])
+						    )).start();
 				} else if(cmdSplit[0].equals("STORED")){
 					new Thread(new Stored(
 							Integer.parseInt(cmdSplit[2]),

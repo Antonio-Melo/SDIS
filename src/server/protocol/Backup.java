@@ -50,6 +50,7 @@ public class Backup {
 					    )).start();
 				System.out.println("ja mandei o carlos enviar o putchunk" + i + "/" + (numChunks - 1));
 			}
+			Utils.writeMD(filePath, f.lastModified(), fileID);
 
 			in.close();
 		} catch (FileNotFoundException e) {
