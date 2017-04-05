@@ -12,17 +12,6 @@ import utils.Utils;
 
 public class PutChunk implements Runnable {
 
-	public static void main(String[] args) throws IOException {
-		byte[] carlos = {(byte) 0xff,(byte)0xff, (byte)0xff};
-		new Thread(new PutChunk(
-				2,
-				"fdahsjkhfuihsdf",
-				4,
-				1,
-				carlos
-				)).start();
-	}
-
 	private int senderID;
 	private String fileID;
 	private int chunkNo;
@@ -51,14 +40,11 @@ public class PutChunk implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("nem vou criar chunk, ja sou eu mesmo lol");
 		if (this.senderID != Peer.serverID) {
-			System.out.println("vou criar chunk");
 			File dir = new File(Peer.dataPath + Utils.FS + this.fileID);
 			dir.mkdirs();
 			File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNo);
 			if (f.exists() && !f.isDirectory()) {
-				System.out.println("ja existia gg");
 				try {
 					sendStoredReply();
 				} catch (IOException e) {
@@ -72,12 +58,11 @@ public class PutChunk implements Runnable {
 				}else{
 					Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{this.replicationDegree,rds[1]});
 				}
-				
-				System.out.println("criei o file");
 				try {
-					if (Peer.capacity == 0 || Peer.capacity - (new File(Peer.dataPath).getTotalSpace()) > 64) {
+					if (Peer.capacity == 0 || Peer.capacity - Peer.usedCapacity > this.body.length) {
 						f.createNewFile();
 						Files.write(f.toPath(), this.body);
+						Peer.usedCapacity += this.body.length;
 						try {
 							Thread.sleep((long)(Math.random() * 400));
 						} catch (InterruptedException e) {

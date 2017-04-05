@@ -33,23 +33,16 @@ public final class Utils {
 	public static final String Space = " ";
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-	public static void main(String[] args) {
-		writeMD("BICHAO", 840923139, "loco");
-	}
-
 	public static final String getFileID(String filePath){
 		File file = new File(filePath);
 
 		String raw = file.getAbsolutePath() + file.length() + file.lastModified();
-		System.out.println(raw);
 
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			md.update(raw.getBytes("UTF-8"));
 			byte[] hash = md.digest();
-			System.out.println(hash);
 			String fileID = bytesToHex(hash);
-			System.out.println(fileID);
 
 			return fileID;
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
@@ -96,7 +89,6 @@ public final class Utils {
 			Iterator it = Peer.rdMap.entrySet().iterator();
 		    while (it.hasNext()) {
 		        HashMap.Entry<String, int[]> pair = (HashMap.Entry)it.next();
-				System.out.println("|| " + pair.getKey() + " || " + pair.getValue()[0] + " || "+ pair.getValue()[1]);
 				writer.println(pair.getKey());
 				writer.println(pair.getValue()[0]);
 				writer.println(pair.getValue()[1]);
@@ -112,7 +104,7 @@ public final class Utils {
 	public static final boolean writeMD(String filePath, long lastModified, String fileID){
 		try{
 			PrintWriter writer = new PrintWriter(new FileOutputStream(
-					new File(Peer.mdFile), 
+					new File(Peer.mdFile),
 					true /* append = true */));
 			writer.println(filePath);
 			writer.println(lastModified);
@@ -190,5 +182,17 @@ public final class Utils {
 
 	    return result;
 	}
+
+	public static long getusedCapacity(){
+		long size = 0;
+		File dataDir = new File(Peer.dataPath);
+		for (File fileDir : dataDir.listFiles()) {
+			for (File chunk : fileDir.listFiles()) {
+				size += chunk.length();
+			}
+		}
+	return size;
+	}
+
 
 }

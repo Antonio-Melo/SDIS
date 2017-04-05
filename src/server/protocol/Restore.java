@@ -13,10 +13,10 @@ import utils.Utils;
 public class Restore {
 
 	public Restore(String filePath){
-		int chunkNumber = 0;		
+		int chunkNumber = 0;
 		String fileId = Utils.getFileIDfromMD(filePath);
 		OutputStream output = null;
-		
+
 		if(fileId != null){
 			try {
 				output = new BufferedOutputStream(new FileOutputStream(filePath));
@@ -46,15 +46,11 @@ public class Restore {
 						e.printStackTrace();
 					}
 				}else{
-					System.out.println("bazei o chunk ta nulo!!!");
 					break;
 				}
 
-				System.out.println("este chunk que recebi tem size" + chunk.length);
-
 				chunkNumber++;
 			}while(chunk.length == 64000);
-			System.out.println("bazei supostamente acabou");
 		}
 	}
 

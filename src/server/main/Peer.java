@@ -14,7 +14,7 @@ import server.protocol.ClientInterface;
 import utils.Utils;
 
 public class Peer {
-	
+
 	public static String protocolVersion = "1.0";
 	public static int serverID = 1;
 	public static String mcAddress = "224.0.0.1";
@@ -29,6 +29,7 @@ public class Peer {
 	public static String rdFile;
 	public static String mdFile;
 	public static long capacity = 0; //Capacity in bytes
+	public static long usedCapacity = 0; //Used space in bytes
 	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
 	public static ConcurrentHashMap<String,ArrayList<Integer>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<Integer>>();
 
@@ -50,18 +51,18 @@ public class Peer {
 			System.out.println("Usage: Peer <Protocol Version> <Server ID> <RMI Remote Object Name> <MC Address> <MC Port> <MDB Address> <MDB Port> <MDR Address> <MDR Port>");
 			return;
 		}
-		
+
 		protocolVersion = args[0];
 		if(protocolVersion == null){
 			System.out.println("Null protocol version");
 		}
-		
+
 		serverID = Integer.parseInt(args[1]);
 		if (serverID < 0){
 			System.out.println("Server ID wrong!");
 			return;
 		}
-		
+
 		remoteObject = args[2];
 		if (remoteObject == null){
 			System.out.println("Remote Object Name wrong!");
@@ -107,10 +108,11 @@ public class Peer {
 		dataPath = path + Utils.FS + "data";
 		rdFile = path + Utils.FS + "rd";
 		mdFile = path + Utils.FS + "md";
-		
+
 		System.out.println("Loading resources...");
 		Utils.initFileSystem();
 		Utils.loadRD();
+		usedCapacity = Utils.getusedCapacity();
 		//CheckState cs = new CheckState();
 		//System.out.println(cs.getState());
 

@@ -12,24 +12,13 @@ import server.main.Peer;
 import utils.Utils;
 
 public class PutChunk implements Runnable{
-	
-	public static void main(String[] args){
-		byte[] carlos = {(byte) 0xff,(byte)0xff, (byte)0xff};
-		new Thread(new PutChunk(
-				3,
-				"PutChunk_teste_initPeer",
-				10,
-				1,
-				carlos
-				)).start();
-	}
-	
+
 	private int senderID;
 	private String fileID;
 	private int chunkNo;
 	private int replicationDegree;
 	private byte[] body;
-	
+
 	public PutChunk(int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
 		this.senderID = senderID;
 		this.fileID = fileID;
@@ -37,10 +26,10 @@ public class PutChunk implements Runnable{
 		this.replicationDegree = replicationDegree;
 		this.body = body;
 	}
-	
+
 	@Override
 	public void run() {
-		// TODO 
+		// TODO
 		// Generate String with chunks and send it to the multicast channel
 		InetAddress mdbGroup;
 		try {
@@ -55,15 +44,14 @@ public class PutChunk implements Runnable{
 			byte[] chunk = new byte[header.length + this.body.length];
 			System.arraycopy(header, 0, chunk, 0, header.length);
 			System.arraycopy(this.body, 0, chunk, header.length, this.body.length);
-			System.out.println(chunk);
 
 			//RD
 			Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{this.replicationDegree,0});
-			
+
 			DatagramSocket clientSocket = new DatagramSocket();
 			InetAddress IPAddress = InetAddress.getByName(Peer.mdbAddress);
 			DatagramPacket sendPacket = new DatagramPacket(chunk, chunk.length, IPAddress, Peer.mdbPort);
-			
+
 			for(int i=1; i <= 5; i++){
 				clientSocket.send(sendPacket);
 				Thread.sleep(400*i);
@@ -73,7 +61,7 @@ public class PutChunk implements Runnable{
 				}
 			}
 			clientSocket.close();
-			
+
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,9 +72,9 @@ public class PutChunk implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 	}
 
 

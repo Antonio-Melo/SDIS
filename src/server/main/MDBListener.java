@@ -27,7 +27,6 @@ public class MDBListener implements Runnable {
 				if(cmdSplit[0].equals("PUTCHUNK")){
 					String CRLF = new String("\r\n\r\n");
 					int bodyIndex = receivedCmdString.indexOf(CRLF)+4;
-					System.out.println("RECEBIIIIIIIIIII PUTCHUUUUUUUUUUUUUUUUUUNK");
 					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
 					new Thread(new PutChunk(
 							//cmdSplit[1],

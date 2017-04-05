@@ -15,10 +15,6 @@ import utils.Utils;
 
 public class GetChunk implements Runnable{
 
-	public static void main(String[] args) throws IOException {
-
-	}
-
 	private int senderID;
 	private String fileID;
 	private int chunkNumber;
@@ -36,7 +32,7 @@ public class GetChunk implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO 
+		// TODO
 		//Check if you have chunk
 		File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNumber);
 		if (f.exists() && !f.isDirectory()) {
@@ -54,20 +50,16 @@ public class GetChunk implements Runnable{
 				//CHUNK <Version> <SenderId> <FileId> <ChunkNo> <CRLF><CRLF><Body>
 				System.arraycopy(header, 0, msg, 0, header.length);
 				System.arraycopy(chunk, 0, msg, header.length, chunk.length);
-				System.out.println(header.length);
-				System.out.println(chunk.length);
-				System.out.println(msg.length);
-				
+
 				//Call RECEIVECHUNK
 				Thread receivedThread = new Thread(new ReceiveChunk());
 				receivedThread.start();
 				receivedThread.join((long)Math.random()*400);
 				if(receivedThread.isAlive()) receivedThread.interrupt();
-				System.out.println("Vou enviar o chunk");
 				if(!this.chunkAlreadySent){
 					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);
 					DatagramSocket mdrSocket = new DatagramSocket();
-					
+
 					DatagramPacket sendChunk = new DatagramPacket(msg,msg.length,mdrGroup,Peer.mdrPort);
 					mdrSocket.send(sendChunk);
 					mdrSocket.close();
@@ -87,7 +79,7 @@ public class GetChunk implements Runnable{
 
 		}
 	}
-	
+
 	class ReceiveChunk implements Runnable {
 
 		@Override
@@ -99,7 +91,7 @@ public class GetChunk implements Runnable{
 				DatagramPacket receiveCommand = new DatagramPacket(receiveMsg,receiveMsg.length);
 				mdrSocket.joinGroup(mdrGroup);
 				mdrSocket.setSoTimeout(400);
-				
+
 				while(!Thread.currentThread().isInterrupted()){
 					mdrSocket.receive(receiveCommand);
 					String receivedCmdString = new String(receiveCommand.getData(), receiveCommand.getOffset(), receiveCommand.getLength());
@@ -118,4 +110,3 @@ public class GetChunk implements Runnable{
 	}
 
 }
-

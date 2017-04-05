@@ -29,15 +29,15 @@ public class Removed implements Runnable {
 	public void run() {
 		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 		if(rds != null){
-			Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{rds[0], rds[1]-1});
-			if(rds[1]-1 < rds[0]){
+			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]-1});
+			if(rds[1]-1 < rds[0]  && this.senderID != Peer.serverID){
 				File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNo);
 				if (f.exists() && !f.isDirectory()) {
 					InputStream in;
 					try {
 						in = new FileInputStream(f);
-					byte[] chunk = new byte[(int)f.getTotalSpace()];
-						in.read(chunk, 0, 64000);
+					byte chunk[] = new byte[(int) f.length()];
+						in.read(chunk, 0,(int) f.length());
 					new Thread(new PutChunk(
 							Peer.serverID,
 							this.fileID,

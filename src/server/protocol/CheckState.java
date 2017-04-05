@@ -11,60 +11,70 @@ import utils.Utils;
 
 public class CheckState {
 
-	public CheckState(){
-	}
-
 	public String getState() {
 		// TODO Auto-generated method stub
 		String state = new String("");
-
 
 		try{
 			//READ FILES
 			FileInputStream fis = new FileInputStream(Peer.mdFile);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-			
-			state += "FILES BACKED UP\n";
+
+			state += "---------------------------------------------------------------------------\n";
+			state += "| BACKED UP FILES                                                         |\n";
+			state += "---------------------------------------------------------------------------\n";
+
 			String FilePath = reader.readLine();
 			while(FilePath != null){
 				reader.readLine();
 				String FileId = reader.readLine();
-				state += "  FilePath: " + FilePath +"\n";
-				state += "  FileId: " + FileId +"\n";
-				state += "  Desired replication degree: "+ Peer.rdMap.get(FileId+Utils.FS+0)[0]+"\n";
-				state += "  Chunk files:"+"\n";
+				state += "  Path  : " + FilePath +"\n";
+				state += "  ID    : " + FileId +"\n";
+				state += "  RD    : "+ Peer.rdMap.get(FileId+Utils.FS+0)[0]+"\n";
+				state += "  Chunks:"+"\n";
+				state += "    | ID      | RD |"+"\n";
 				int chunkNo = 0;
-				int[] rds = Peer.rdMap.get(FileId+Utils.FS+chunkNo);
+				int[] rds = Peer.rdMap.get(FileId + Utils.FS + chunkNo);
 				while(rds != null){
-					state += "    Chunk id: " +chunkNo+" Perceived Replication Degree: "+rds[1]+"\n";
+					state += "    | " + String.format("%" + -8 + "s", chunkNo) +
+					"| " + String.format("%" + -3 + "s", rds[1]) +
+					"|\n";
+					rds = Peer.rdMap.get(FileId + Utils.FS + chunkNo);
 					chunkNo++;
 				}
-				state += "-----------------------------\n";
+							state += "---------------------------------------------------------------------------\n";
 				FilePath = reader.readLine();
 			}
-			state += "----------------------------------------------------\n";
-			state += "FILES STORED\n";
-			
+			state += "| STORED FILES                                                            |\n";
+			state += "---------------------------------------------------------------------------\n";
+
 			File dir = new File(Peer.dataPath);
 			String[] fileIds = dir.list();
 			for(String file:fileIds){
-				state += "  File id: "+ file+"\n";
+				state += "  ID    : "+ file+"\n";
+				state += "  Chunks:"+"\n";
+				state += "    | ID      | kB | RD |"+"\n";
 				File fileDir = new File(Peer.dataPath + Utils.FS+file);
 				String[] chunks = fileDir.list();
 				for(String chunkNumber:chunks){
 					File chunk = new File(Peer.dataPath+ Utils.FS+ file+Utils.FS+chunkNumber);
-					state += "    Chunk id: "+ chunkNumber + " Size: "+ chunk.getTotalSpace()/1000+ " Perceived Replication Degree: "+ Peer.rdMap.get(file+Utils.FS+chunkNumber)[1]+"\n"; ;
-				} 
+					state += "    | " + String.format("%" + -8 + "s", chunkNumber) +
+					"| " + String.format("%" + -3 + "s", chunk.length()/1000) +
+					"| "+ String.format("%" + -3 + "s", Peer.rdMap.get(file+Utils.FS+chunkNumber)[1]) +
+					"|\n";
+				}
 			}
-			state += "----------------------------------------------------\n";
-			state += "PEER CAPACITY\n";
+			state += "---------------------------------------------------------------------------\n";
+			state += "| PEER STORAGE CAPACITY                                                   |\n";
+			state += "---------------------------------------------------------------------------\n";
 			state += "  Total capacity: ";
 			if(Peer.capacity != 0){
-				state += Peer.capacity/1000+"\n";
+				state += (double)Peer.capacity/1000+"kB\n";
 			}else state += "infinite\n";
-			state += "  Capacity used: "+ dir.getTotalSpace()/1000;
-			
-			
+			state += "  Used capacity : "+ (double)Peer.usedCapacity/1000+ "kB\n";
+			state += "---------------------------------------------------------------------------\n";
+
+			return state;
 
 		} catch (IOException e) {
 			e.printStackTrace();
