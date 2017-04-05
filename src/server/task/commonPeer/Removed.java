@@ -31,6 +31,11 @@ public class Removed implements Runnable {
 		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 		if(rds != null){
 			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]-1});
+			ArrayList<Integer> detailed = Peer.rdDetailedMap.get(this.fileID + Utils.FS + this.chunkNo);
+if(detailed != null && !detailed.contains(this.senderID)){
+detailed.remove(this.senderID);
+Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
+}
 			if(rds[1]-1 < rds[0]  && this.senderID != Peer.serverID){
 				File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNo);
 				if (f.exists() && !f.isDirectory()) {
