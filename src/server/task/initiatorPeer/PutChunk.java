@@ -46,8 +46,12 @@ public class PutChunk implements Runnable{
 			System.arraycopy(this.body, 0, chunk, header.length, this.body.length);
 
 			//RD
-			Peer.rdMap.put(this.fileID + this.chunkNo, new int[]{this.replicationDegree,0});
-
+			int rds[] = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+			if(rds == null){
+				Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{this.replicationDegree,0});
+			}else{
+				Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{this.replicationDegree,rds[1]});
+			}
 			DatagramSocket clientSocket = new DatagramSocket();
 			InetAddress IPAddress = InetAddress.getByName(Peer.mdbAddress);
 			DatagramPacket sendPacket = new DatagramPacket(chunk, chunk.length, IPAddress, Peer.mdbPort);
@@ -55,7 +59,7 @@ public class PutChunk implements Runnable{
 			for(int i=1; i <= 5; i++){
 				clientSocket.send(sendPacket);
 				Thread.sleep(400*i);
-				int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+				rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 				if(rds[0] <= rds[1]){
 						break;
 				}

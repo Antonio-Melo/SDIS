@@ -27,6 +27,7 @@ public class Removed implements Runnable {
 
 	@Override
 	public void run() {
+		// TODO remove from detailedMap if exists
 		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 		if(rds != null){
 			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]-1});

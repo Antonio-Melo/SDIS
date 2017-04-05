@@ -39,8 +39,8 @@ public class CheckState {
 					state += "    | " + String.format("%" + -8 + "s", chunkNo) +
 					"| " + String.format("%" + -3 + "s", rds[1]) +
 					"|\n";
-					rds = Peer.rdMap.get(FileId + Utils.FS + chunkNo);
 					chunkNo++;
+					rds = Peer.rdMap.get(FileId + Utils.FS + chunkNo);
 				}
 							state += "---------------------------------------------------------------------------\n";
 				FilePath = reader.readLine();

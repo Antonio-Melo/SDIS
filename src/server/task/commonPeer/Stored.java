@@ -35,17 +35,26 @@ public class Stored implements Runnable {
 			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{0,0});
 			detailed = new ArrayList<Integer>();
 			detailed.add(this.senderID);
-			Peer.rdDetailedMap.put(this.fileID + this.chunkNo, detailed);
+			Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
+			return;
 		}
-		rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+
 		detailed = Peer.rdDetailedMap.get(this.fileID + Utils.FS + this.chunkNo);
-		if(!Arrays.asList(detailed).contains(this.senderID)){
-			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]+1});
-			if(detailed == null){
-				detailed = new ArrayList<Integer>();
-			}
+		if(detailed == null){
+					rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+					Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0],1});
+					detailed = new ArrayList<Integer>();
+					detailed.add(this.senderID);
+					Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
+					return;
+				}
+
+		if(!detailed.contains(this.senderID)){
+					rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+						Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]+1});
 			detailed.add(this.senderID);
-			Peer.rdDetailedMap.put(this.fileID + this.chunkNo, detailed);
+			Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
+			System.out.println("DETAILED("+Peer.serverID+","+this.chunkNo+")"+detailed);
 		}
 		/*if(Utils.saveRD()){
 			System.out.println("GRAVEI NO RD");
