@@ -39,7 +39,7 @@ public class GetChunk implements Runnable{
 			try {
 				byte[] header = new String("CHUNK"+Utils.Space
 						+ "1.0" + Utils.Space
-						+ this.senderID + Utils.Space
+						+ Peer.serverID + Utils.Space
 						+ this.fileID+ Utils.Space
 						+ this.chunkNumber + Utils.Space
 						+ Utils.CRLF + Utils.CRLF).getBytes();

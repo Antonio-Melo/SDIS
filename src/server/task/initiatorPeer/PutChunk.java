@@ -56,7 +56,7 @@ public class PutChunk implements Runnable{
 				clientSocket.send(sendPacket);
 				Thread.sleep(400*i);
 				rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
-				if(rds[0] <= rds[1]){
+				if(rds != null && rds[0] <= rds[1]){
 						break;
 				}
 			}

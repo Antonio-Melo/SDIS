@@ -44,7 +44,7 @@ public class PutChunk implements Runnable {
 
 	@Override
 	public void run() {
-		//TODO check se o ficheiro nao é dele
+		//TODO check se o ficheiro nao e' dele
 		if (!this.senderID.equals(Peer.serverID)) {
 			File dir = new File(Peer.dataPath + Utils.FS + this.fileID);
 			dir.mkdirs();
