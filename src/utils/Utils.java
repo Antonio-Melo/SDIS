@@ -94,8 +94,9 @@ public final class Utils {
 		try{
 			PrintWriter writer = new PrintWriter(Peer.rdFile, "UTF-8");
 			Iterator it = Peer.rdMap.entrySet().iterator();
-			while (it.hasNext()) {
-				HashMap.Entry<String,int[]> pair = (HashMap.Entry)it.next();
+		    while (it.hasNext()) {
+		        HashMap.Entry<String, int[]> pair = (HashMap.Entry)it.next();
+				System.out.println("|| " + pair.getKey() + " || " + pair.getValue()[0] + " || "+ pair.getValue()[1]);
 				writer.println(pair.getKey());
 				writer.println(pair.getValue()[0]);
 				writer.println(pair.getValue()[1]);

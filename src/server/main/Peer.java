@@ -7,7 +7,9 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
+import server.protocol.CheckState;
 import server.protocol.ClientInterface;
 import utils.Utils;
 
@@ -27,8 +29,8 @@ public class Peer {
 	public static String rdFile;
 	public static String mdFile;
 	public static long capacity = 0; //Capacity in bytes
-	public static HashMap<String,int[]> rdMap = new HashMap<String,int[]>();
-	public static HashMap<String,ArrayList<Integer>> rdDetailedMap = new HashMap<String,ArrayList<Integer>>();
+	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
+	public static ConcurrentHashMap<String,ArrayList<Integer>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<Integer>>();
 
 	/**
 	 * Main service starter
@@ -109,6 +111,8 @@ public class Peer {
 		System.out.println("Loading resources...");
 		Utils.initFileSystem();
 		Utils.loadRD();
+		//CheckState cs = new CheckState();
+		//System.out.println(cs.getState());
 
 		System.out.println("Starting services...");
 
@@ -131,7 +135,6 @@ public class Peer {
 
 		mcThread.start();
 		mdbThread.start();
-		System.out.println(Utils.getFileIDfromMD("BICHAO"));
 
 		System.out.println("Services running...");
 

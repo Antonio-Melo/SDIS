@@ -41,13 +41,21 @@ public class Backup {
 					}
 				}else numbytesRead = in.read(chunk, 0, 64000);
 				System.out.println("VOU ENVIAR PUTCHUNK" + i + "/" + (numChunks - 1));
-				new Thread(new PutChunk(
+				
+				Thread putChunkThread = new Thread(new PutChunk(
 						Peer.serverID,
 						fileID,
 					    i,
 					    replicationDeg,
 					    chunk
-					    )).start();
+					    ));
+				putChunkThread.start();
+				try {
+					putChunkThread.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println("ja mandei o carlos enviar o putchunk" + i + "/" + (numChunks - 1));
 			}
 			Utils.writeMD(filePath, f.lastModified(), fileID);
