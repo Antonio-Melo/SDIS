@@ -1,0 +1,26 @@
+#To compile and run the application the following steps need to be executed in the same location where the 'src' folder(with the source code) is:
+#The "sub-scripts" mentioned may be changed according the needs
+#By default these commands compile and start running 3 peers and one backup client
+
+#Compiles the client and peer code
+sh compile_all.sh
+
+#Starts the RMI Registry(used in client-peer communication) in another terminal
+sh rmi_linux.sh
+#RMI Registry in Windows(the sleep is needed because when tested in windows the RMI Registry took some seconds to start working)
+#sh rmi_windows.sh
+#sleep 15
+
+#Starts multiples peers at the same time
+sh run.sh
+#Starts only one peer
+#sh peer.sh
+
+#Multiples scripts to run the 5 possible clients(the sleep is needed to ensure the peers have started working)
+sleep 4
+sh backup.sh
+#sh restore.sh
+#sh delete.sh
+#sh reclaim.sh
+#sh state.sh
+#java -classpath bin client.TestApp peer1 BACKUP test1.pdf 2

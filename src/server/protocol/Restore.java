@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import server.main.Peer;
 import server.task.initiatorPeer.GetChunk;
 import utils.Utils;
 

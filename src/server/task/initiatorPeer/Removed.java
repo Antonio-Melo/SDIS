@@ -24,8 +24,12 @@ public class Removed implements Runnable {
 		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
-				"REMOVED " + "1.0" + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " " + Utils.CRLF + Utils.CRLF)
-				.getBytes();
+				"REMOVED" + Utils.Space +
+				"1.0" + Utils.Space +
+				Peer.serverID + Utils.Space +
+				this.fileID + Utils.Space +
+				this.chunkNo + Utils.Space +
+				Utils.CRLF + Utils.CRLF).getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
 		clientSocket.close();
