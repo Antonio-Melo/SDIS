@@ -1,12 +1,9 @@
 package utils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -19,7 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -75,6 +71,7 @@ public final class Utils {
 				Peer.rdMap.put(fileID, rds);
 				fileID = reader.readLine();
 			}
+			reader.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -138,6 +135,7 @@ public final class Utils {
 
 				tmpFilePath = reader.readLine();
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

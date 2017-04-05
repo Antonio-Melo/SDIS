@@ -27,25 +27,24 @@ public class MCListener implements Runnable {
 				String cmdSplit[] = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength()).split("\\s+");
 				if(cmdSplit[0].equals("GETCHUNK")){
 					new Thread(new GetChunk(
-							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[2],
 							cmdSplit[3],
 							Integer.parseInt(cmdSplit[4])
 						    )).start();
 				} else if(cmdSplit[0].equals("DELETE")){
 					new Thread(new Delete(
-							//cmdSplit[1],
-							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[2],
 							cmdSplit[3]
 						    )).start();
 				} else if(cmdSplit[0].equals("REMOVED")){
 					new Thread(new Removed(
-							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[2],
 							cmdSplit[3],
 							Integer.parseInt(cmdSplit[4])
 						    )).start();
 				} else if(cmdSplit[0].equals("STORED")){
 					new Thread(new Stored(
-							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[2],
 							cmdSplit[3],
 							Integer.parseInt(cmdSplit[4])
 						    )).start();

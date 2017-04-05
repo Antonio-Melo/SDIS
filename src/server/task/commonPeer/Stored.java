@@ -1,15 +1,6 @@
 package server.task.commonPeer;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import server.main.Peer;
 import utils.Utils;
@@ -17,11 +8,11 @@ import utils.Utils;
 //RD
 public class Stored implements Runnable {
 
-	private int senderID;
+	private String senderID;
 	private String fileID;
 	private int chunkNo;
 
-	public Stored(int senderID, String fileID, int chunkNo) {
+	public Stored(String senderID, String fileID, int chunkNo) {
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
@@ -30,10 +21,10 @@ public class Stored implements Runnable {
 	@Override
 	public void run() {
 		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
-		ArrayList<Integer> detailed;
+		ArrayList<String> detailed;
 		if(rds == null){
 			Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{0,0});
-			detailed = new ArrayList<Integer>();
+			detailed = new ArrayList<String>();
 			detailed.add(this.senderID);
 			Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
 			return;
@@ -43,7 +34,7 @@ public class Stored implements Runnable {
 		if(detailed == null){
 					rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 					Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0],1});
-					detailed = new ArrayList<Integer>();
+					detailed = new ArrayList<String>();
 					detailed.add(this.senderID);
 					Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
 					return;
@@ -56,9 +47,7 @@ public class Stored implements Runnable {
 			Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
 			System.out.println("DETAILED("+Peer.serverID+","+this.chunkNo+")"+detailed);
 		}
-		/*if(Utils.saveRD()){
-			System.out.println("GRAVEI NO RD");
-		}*/
+		Utils.saveRD();
 	}
 
 }

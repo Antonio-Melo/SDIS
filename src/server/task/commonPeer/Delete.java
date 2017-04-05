@@ -9,10 +9,10 @@ import utils.Utils;
 
 public class Delete implements Runnable {
 
-	int senderID;
+	String senderID;
 	String fileID;
 
-	public Delete(int senderID, String fileID) {
+	public Delete(String senderID, String fileID) {
 		this.senderID = senderID;
 		this.fileID = fileID;
 	}

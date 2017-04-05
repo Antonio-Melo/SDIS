@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import utils.*;
-import server.main.Peer;
 import server.task.initiatorPeer.PutChunk;
 
 public class Backup {
@@ -41,7 +40,6 @@ public class Backup {
 				}else numbytesRead = in.read(chunk, 0, 64000);
 
 				Thread putChunkThread = new Thread(new PutChunk(
-						Peer.serverID,
 						fileID,
 					    i,
 					    replicationDeg,

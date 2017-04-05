@@ -12,13 +12,13 @@ import utils.Utils;
 
 public class PutChunk implements Runnable {
 
-	private int senderID;
+	private String senderID;
 	private String fileID;
 	private int chunkNo;
 	private int replicationDegree;
 	private byte[] body;
 
-	public PutChunk(int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
+	public PutChunk(String senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
@@ -30,8 +30,12 @@ public class PutChunk implements Runnable {
 		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
-				"STORED " + Peer.protocolVersion + " " + Peer.serverID + " " + this.fileID + " " + this.chunkNo + " " + Utils.CRLF + Utils.CRLF)
-						.getBytes();
+				"STORED" + Utils.Space +
+				"1.0" + Utils.Space +
+				Peer.serverID + Utils.Space +
+				this.fileID + Utils.Space +
+				this.chunkNo + Utils.Space +
+				Utils.CRLF + Utils.CRLF).getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
 		clientSocket.close();
@@ -40,7 +44,8 @@ public class PutChunk implements Runnable {
 
 	@Override
 	public void run() {
-		if (this.senderID != Peer.serverID) {
+		//TODO check se o ficheiro nao é dele
+		if (!this.senderID.equals(Peer.serverID)) {
 			File dir = new File(Peer.dataPath + Utils.FS + this.fileID);
 			dir.mkdirs();
 			File f = new File(Peer.dataPath + Utils.FS + this.fileID + Utils.FS + this.chunkNo);

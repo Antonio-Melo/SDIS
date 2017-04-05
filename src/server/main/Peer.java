@@ -6,17 +6,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import server.protocol.CheckState;
 import server.protocol.ClientInterface;
 import utils.Utils;
 
 public class Peer {
 
 	public static String protocolVersion = "1.0";
-	public static int serverID = 1;
+	public static String serverID = "1";
 	public static String mcAddress = "224.0.0.1";
 	public static int mcPort = 9001;
 	public static String mdbAddress = "224.0.0.2";
@@ -31,7 +29,7 @@ public class Peer {
 	public static long capacity = 0; //Capacity in bytes
 	public static long usedCapacity = 0; //Used space in bytes
 	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
-	public static ConcurrentHashMap<String,ArrayList<Integer>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<Integer>>();
+	public static ConcurrentHashMap<String,ArrayList<String>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<String>>();
 
 	/**
 	 * Main service starter
@@ -57,8 +55,8 @@ public class Peer {
 			System.out.println("Null protocol version");
 		}
 
-		serverID = Integer.parseInt(args[1]);
-		if (serverID < 0){
+		serverID = args[1];
+		if (serverID == null){
 			System.out.println("Server ID wrong!");
 			return;
 		}

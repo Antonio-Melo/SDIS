@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
 
@@ -13,14 +12,12 @@ import utils.Utils;
 
 public class PutChunk implements Runnable{
 
-	private int senderID;
 	private String fileID;
 	private int chunkNo;
 	private int replicationDegree;
 	private byte[] body;
 
-	public PutChunk(int senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
-		this.senderID = senderID;
+	public PutChunk(String fileID, int chunkNo, int replicationDegree, byte[] body) {
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 		this.replicationDegree = replicationDegree;
@@ -31,12 +28,11 @@ public class PutChunk implements Runnable{
 	public void run() {
 		// TODO
 		// Generate String with chunks and send it to the multicast channel
-		InetAddress mdbGroup;
 		try {
 			//Prepare byte[] msg
 			byte[] header = new String("PUTCHUNK" + Utils.Space
 					+ Peer.protocolVersion + Utils.Space
-					+ this.senderID + Utils.Space
+					+ Peer.serverID + Utils.Space
 					+ this.fileID+ Utils.Space
 					+ this.chunkNo + Utils.Space
 					+ this.replicationDegree + Utils.Space

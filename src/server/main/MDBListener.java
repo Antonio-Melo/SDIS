@@ -7,6 +7,7 @@ import java.net.MulticastSocket;
 import java.util.Arrays;
 
 import server.task.commonPeer.PutChunk;
+import utils.Utils;
 
 public class MDBListener implements Runnable {
 
@@ -25,12 +26,10 @@ public class MDBListener implements Runnable {
 				String receivedCmdString = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength());
 				String cmdSplit[] = receivedCmdString.split("\\s+");
 				if(cmdSplit[0].equals("PUTCHUNK")){
-					String CRLF = new String("\r\n\r\n");
-					int bodyIndex = receivedCmdString.indexOf(CRLF)+4;
+					int bodyIndex = receivedCmdString.indexOf(Utils.CRLF+Utils.CRLF)+4;
 					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
 					new Thread(new PutChunk(
-							//cmdSplit[1],
-							Integer.parseInt(cmdSplit[2]),
+							cmdSplit[2],
 							cmdSplit[3],
 						    Integer.parseInt(cmdSplit[4]),
 						    Integer.parseInt(cmdSplit[5]),

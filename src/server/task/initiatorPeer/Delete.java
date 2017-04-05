@@ -22,7 +22,11 @@ public class Delete implements Runnable {
 		DatagramSocket clientSocket = new DatagramSocket();
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
-				"DELETE " + Peer.protocolVersion + " " + Peer.serverID + " " + this.fileID + " " + Utils.CRLF + Utils.CRLF)
+				"DELETE" + Utils.Space +
+				"1.0" + Utils.Space +
+				Peer.serverID + Utils.Space +
+				this.fileID + Utils.Space +
+				Utils.CRLF + Utils.CRLF)
 				.getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);

@@ -26,7 +26,7 @@ public class Restore {
 			}
 			byte[] chunk = null;
 			do{
-				GetChunk getChunk = new GetChunk(Peer.serverID,fileId,chunkNumber);
+				GetChunk getChunk = new GetChunk(fileId,chunkNumber);
 				Thread getChunkThread = new Thread(getChunk);
 				getChunkThread.start();
 

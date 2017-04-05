@@ -8,14 +8,13 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 import server.main.Peer;
 import utils.Utils;
 
 public class GetChunk implements Runnable{
 
-	private int senderID;
+	private String senderID;
 	private String fileID;
 	private int chunkNumber;
 	private boolean chunkAlreadySent = false;
@@ -24,7 +23,7 @@ public class GetChunk implements Runnable{
 		this.chunkAlreadySent = chunkAlreadySent;
 	}
 
-	public GetChunk(int senderID,String fileID,int chunkNumber){
+	public GetChunk(String senderID,String fileID,int chunkNumber){
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNumber = chunkNumber;
@@ -39,7 +38,7 @@ public class GetChunk implements Runnable{
 			//SEND CHUNK
 			try {
 				byte[] header = new String("CHUNK"+Utils.Space
-						+ Peer.protocolVersion + Utils.Space
+						+ "1.0" + Utils.Space
 						+ this.senderID + Utils.Space
 						+ this.fileID+ Utils.Space
 						+ this.chunkNumber + Utils.Space
