@@ -47,9 +47,8 @@ public class Stored implements Runnable {
 						Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{rds[0], rds[1]+1});
 			detailed.add(this.senderID);
 			Peer.rdDetailedMap.put(this.fileID + Utils.FS + this.chunkNo, detailed);
-			System.out.println("DETAILED("+Peer.serverID+","+this.chunkNo+")"+detailed);
+			//System.out.println("DETAILED("+Peer.serverID+","+this.chunkNo+")"+detailed);
 		}
-		//Utils.saveRD();
 	}
 
 }

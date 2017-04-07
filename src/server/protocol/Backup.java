@@ -22,10 +22,7 @@ public class Backup {
 		//get File ID
 		String fileID = Utils.getFileID(filePath);
 		String lastFileID = Peer.mdMap.get(filePath);
-		System.out.println("actual:" + fileID);
-		System.out.println("last:" + lastFileID);
 		if(lastFileID != null && lastFileID.equals(fileID)){
-			System.out.println("NAO VOU PEDIR BACKUUUUP!");
 		}else{
 			if(lastFileID != null && !lastFileID.equals(fileID)){
 				new Thread(new Delete(lastFileID)).start();
