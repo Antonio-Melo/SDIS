@@ -45,5 +45,6 @@ public class Delete implements Runnable {
 			chunkNo++;
 			rds = Peer.rdMap.get(this.fileID + Utils.FS + chunkNo);
 		}
+		Peer.saveRD = true;
 	}
 }

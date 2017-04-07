@@ -64,7 +64,7 @@ public final class Utils {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
 
 			String fileID = reader.readLine();
-			int[] rds = null;
+			int[] rds = new int[2];
 			while(fileID != null){
 				rds[0] = Integer.parseInt(reader.readLine());
 				rds[1] = Integer.parseInt(reader.readLine());
