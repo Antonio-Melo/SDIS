@@ -1,6 +1,7 @@
 package server.protocol;
 
 import utils.Utils;
+import server.main.Peer;
 import server.task.initiatorPeer.Delete;
 
 public class DeleteProtocol {
@@ -8,10 +9,10 @@ public class DeleteProtocol {
 
 	 public DeleteProtocol(String filePath){
 		 //for(int i=0; i < N_DELETES_TRIES; i++){
-			 new Thread(new Delete(Utils.getFileIDfromMD(filePath))).start();
+			 new Thread(new Delete(Peer.mdMap.get(filePath))).start();
 		 //}
-		 //TODO delete all versions of fileID
-		 //TODO delete register from MD file
+		 	Peer.mdMap.remove(filePath);
+			Utils.writeMD();
 	 }
 
 }

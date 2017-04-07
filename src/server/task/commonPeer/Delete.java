@@ -37,5 +37,13 @@ public class Delete implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		int chunkNo = 0;
+		int[] rds = Peer.rdMap.get(this.fileID + Utils.FS + chunkNo);
+		while(rds != null){
+			Peer.rdMap.remove(this.fileID + Utils.FS + chunkNo);
+			Peer.rdDetailedMap.remove(this.fileID + Utils.FS + chunkNo);
+			chunkNo++;
+			rds = Peer.rdMap.get(this.fileID + Utils.FS + chunkNo);
+		}
 	}
 }

@@ -77,7 +77,26 @@ public final class Utils {
 			e.printStackTrace();
 			return false;
 		}
+	}
 
+	public static final boolean loadMD(){
+		try{
+			FileInputStream fis = new FileInputStream(Peer.mdFile);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+
+			String path = reader.readLine();
+			String fileID = null;
+			while(path != null){
+				fileID = reader.readLine();
+				Peer.mdMap.put(path, fileID);
+				path = reader.readLine();
+			}
+			reader.close();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static final boolean saveRD(){
@@ -89,7 +108,6 @@ public final class Utils {
 				writer.println(pair.getKey());
 				writer.println(pair.getValue()[0]);
 				writer.println(pair.getValue()[1]);
-				it.remove();
 			}
 			writer.close();
 			return true;
@@ -98,48 +116,20 @@ public final class Utils {
 		}
 	}
 
-	public static final boolean writeMD(String filePath, long lastModified, String fileID){
+	public static final boolean writeMD(){
 		try{
-			PrintWriter writer = new PrintWriter(new FileOutputStream(
-					new File(Peer.mdFile),
-					true /* append = true */));
-			writer.println(filePath);
-			writer.println(lastModified);
-			writer.println(fileID);
+			PrintWriter writer = new PrintWriter(Peer.mdFile, "UTF-8");
+			Iterator it = Peer.mdMap.entrySet().iterator();
+		    while (it.hasNext()) {
+		        HashMap.Entry<String, String> pair = (HashMap.Entry)it.next();
+				writer.println(pair.getKey());
+				writer.println(pair.getValue());
+			}
 			writer.close();
 			return true;
 		} catch (IOException e) {
 			return false;
 		}
-	}
-
-	public static final String getFileIDfromMD(String filePath){
-		String fileID = null;
-		long lastModified = 0;
-		try{
-			FileInputStream fis = new FileInputStream(Peer.mdFile);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
-			String tmpFilePath = reader.readLine();
-			long tmpLastModified = 0;
-			String tmpFileID = null;
-			while(tmpFilePath != null){
-				tmpLastModified = Long.parseLong(reader.readLine());
-				tmpFileID = reader.readLine();
-				if(tmpFilePath.equals(filePath)){
-					if(lastModified < tmpLastModified || lastModified == 0){
-						lastModified = tmpLastModified;
-						fileID = tmpFileID;
-					}
-				}
-
-				tmpFilePath = reader.readLine();
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return fileID;
 	}
 
 	public static final boolean initFileSystem(){

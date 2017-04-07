@@ -28,6 +28,8 @@ public class Peer {
 	public static String mdFile;
 	public static long capacity = 0; //Capacity in bytes
 	public static long usedCapacity = 0; //Used space in bytes
+	public static boolean saveRD = false;
+	public static ConcurrentHashMap<String,String> mdMap = new ConcurrentHashMap<String,String>();
 	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
 	public static ConcurrentHashMap<String,ArrayList<String>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<String>>();
 
@@ -118,9 +120,11 @@ public class Peer {
 
 		MCListener mcListener = new MCListener();
 		MDBListener mdbListener = new MDBListener();
+		RDwriter rdWriter = new RDwriter();
 
 		Thread mcThread = new Thread(mcListener);
 		Thread mdbThread = new Thread(mdbListener);
+		Thread rdWriterThread = new Thread(rdWriter);
 		try {
 		// Bind the remote object's stub in the registry
 			ClientAppListener clientAppListener = new ClientAppListener();
@@ -135,6 +139,7 @@ public class Peer {
 
 		mcThread.start();
 		mdbThread.start();
+		rdWriterThread.start();
 
 		System.out.println("Services running...");
 

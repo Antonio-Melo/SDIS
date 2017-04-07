@@ -6,14 +6,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import server.main.Peer;
 import server.task.initiatorPeer.GetChunk;
-import utils.Utils;
 
 public class Restore {
 
 	public Restore(String filePath){
 		int chunkNumber = 0;
-		String fileId = Utils.getFileIDfromMD(filePath);
+		String fileId = Peer.mdMap.get(filePath);
 		OutputStream output = null;
 
 		if(fileId != null){

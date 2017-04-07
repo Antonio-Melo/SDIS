@@ -5,6 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import server.main.Peer;
 import utils.Utils;
@@ -15,19 +21,15 @@ public class CheckState {
 		// TODO Auto-generated method stub
 		String state = new String("");
 
-		try{
-			//READ FILES
-			FileInputStream fis = new FileInputStream(Peer.mdFile);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-
 			state += "---------------------------------------------------------------------------\n";
 			state += "| BACKED UP FILES                                                         |\n";
 			state += "---------------------------------------------------------------------------\n";
 
-			String FilePath = reader.readLine();
-			while(FilePath != null){
-				reader.readLine();
-				String FileId = reader.readLine();
+			Iterator it = Peer.mdMap.entrySet().iterator();
+		    while (it.hasNext()) {
+		        HashMap.Entry<String, String> pair = (HashMap.Entry)it.next();
+				String FilePath = pair.getKey();
+				String FileId = pair.getValue();
 				state += "  Path  : " + FilePath +"\n";
 				state += "  ID    : " + FileId +"\n";
 				state += "  RD    : "+ Peer.rdMap.get(FileId+Utils.FS+0)[0]+"\n";
@@ -43,7 +45,6 @@ public class CheckState {
 					rds = Peer.rdMap.get(FileId + Utils.FS + chunkNo);
 				}
 							state += "---------------------------------------------------------------------------\n";
-				FilePath = reader.readLine();
 			}
 			state += "| STORED FILES                                                            |\n";
 			state += "---------------------------------------------------------------------------\n";
@@ -75,12 +76,6 @@ public class CheckState {
 			state += "---------------------------------------------------------------------------\n";
 
 			return state;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 }

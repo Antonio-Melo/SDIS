@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import utils.*;
+import server.main.Peer;
+import server.task.initiatorPeer.Delete;
 import server.task.initiatorPeer.PutChunk;
 
 public class Backup {
@@ -17,6 +19,20 @@ public class Backup {
 		long fileLength = f.length();
 		byte[] chunk = new byte[64000];
 
+		//get File ID
+		String fileID = Utils.getFileID(filePath);
+		String lastFileID = Peer.mdMap.get(filePath);
+		System.out.println("actual:" + fileID);
+		System.out.println("last:" + lastFileID);
+		if(lastFileID != null && lastFileID.equals(fileID)){
+			System.out.println("NAO VOU PEDIR BACKUUUUP!");
+		}else{
+			if(lastFileID != null && !lastFileID.equals(fileID)){
+				new Thread(new Delete(lastFileID)).start();
+			}
+			Peer.mdMap.put(filePath,fileID);
+			Utils.writeMD();
+
 		try {
 			InputStream in = new FileInputStream(f);
 
@@ -24,8 +40,6 @@ public class Backup {
 			int numChunks = (int)(fileLength/64000)+1;
 			//Size of the last chunk
 			int lastChunkSize = (int)(fileLength%64000);
-			//get File ID
-			String fileID = Utils.getFileID(f.getPath());
 
 			//Create chunks and call PutChunks threads
 			for(int i = 0;i < numChunks;i++){
@@ -53,7 +67,6 @@ public class Backup {
 					e.printStackTrace();
 				}
 			}
-			Utils.writeMD(filePath, f.lastModified(), fileID);
 
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -64,5 +77,6 @@ public class Backup {
 			e.printStackTrace();
 		}
 	}
+}
 
 }
