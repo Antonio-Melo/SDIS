@@ -53,6 +53,11 @@ public class Restore {
 
 				chunkNumber++;
 			}while(chunk.length == 64000);
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
