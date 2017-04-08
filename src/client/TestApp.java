@@ -20,15 +20,23 @@ public class TestApp {
 			ClientInterface stub = (ClientInterface) registry.lookup(remoteObject);
 			if(args.length == 4){
 				if(args[1].equals("BACKUP")){
-					stub.backup(args[2],Integer.parseInt(args[3]));
+					stub.backup("1.0",args[2],Integer.parseInt(args[3]));
+				} else if(args[1].equals("BACKUPENH")){
+					stub.backup("2.0",args[2],Integer.parseInt(args[3]));
 				}
 			} else if(args.length == 3){
 				if(args[1].equals("RESTORE")){
-					stub.restore(args[2]);
+					stub.restore("1.0",args[2]);
+				}else if(args[1].equals("RESTOREENH")){
+					stub.restore("2.0",args[2]);
 				}else if(args[1].equals("DELETE")){
-					stub.delete(args[2]);
+					stub.delete("1.0",args[2]);
+				}else if(args[1].equals("DELETEENH")){
+					stub.delete("2.0",args[2]);
 				}else if(args[1].equals("RECLAIM")){
-					stub.reclaim(Integer.parseInt(args[2]));
+					stub.reclaim("1.0",Integer.parseInt(args[2]));
+				}else if(args[1].equals("RECLAIMENH")){
+					stub.reclaim("2.0",Integer.parseInt(args[2]));
 				}
 			} else if(args.length == 2){
 				if(args[1].equals("STATE")){

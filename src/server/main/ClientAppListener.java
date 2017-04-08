@@ -7,22 +7,26 @@ import server.protocol.*;
 public class ClientAppListener implements ClientInterface{
 
 	@Override
-	public void backup(String filePath, int replicationDeg) throws RemoteException {
-		new Backup(filePath, replicationDeg);
+	public void backup(String protocolVersion, String filePath, int replicationDeg) throws RemoteException {
+		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
+		new Backup(protocolVersion, filePath, replicationDeg);
 	}
 
 	@Override
-	public void restore(String filePath) throws RemoteException {
+	public void restore(String protocolVersion, String filePath) throws RemoteException {
+		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
 		new Restore(filePath);
 	}
 
 	@Override
-	public void delete(String filePath) throws RemoteException {
+	public void delete(String protocolVersion, String filePath) throws RemoteException {
+		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
 		new DeleteProtocol(filePath);
 	}
 
 	@Override
-	public void reclaim(int diskSpace) throws RemoteException {
+	public void reclaim(String protocolVersion, int diskSpace) throws RemoteException {
+		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
 		new Reclaim(diskSpace);
 	}
 

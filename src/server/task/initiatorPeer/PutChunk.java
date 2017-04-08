@@ -12,12 +12,14 @@ import utils.Utils;
 
 public class PutChunk implements Runnable{
 
+	private String protocolVersion;
 	private String fileID;
 	private int chunkNo;
 	private int replicationDegree;
 	private byte[] body;
 
-	public PutChunk(String fileID, int chunkNo, int replicationDegree, byte[] body) {
+	public PutChunk(String protocolVersion, String fileID, int chunkNo, int replicationDegree, byte[] body) {
+		this.protocolVersion = protocolVersion;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 		this.replicationDegree = replicationDegree;
@@ -31,7 +33,7 @@ public class PutChunk implements Runnable{
 		try {
 			//Prepare byte[] msg
 			byte[] header = new String("PUTCHUNK" + Utils.Space
-					+ Peer.protocolVersion + Utils.Space
+					+ this.protocolVersion + Utils.Space
 					+ Peer.serverID + Utils.Space
 					+ this.fileID+ Utils.Space
 					+ this.chunkNo + Utils.Space

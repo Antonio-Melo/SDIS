@@ -13,7 +13,7 @@ import server.task.initiatorPeer.PutChunk;
 
 public class Backup {
 
-	public Backup(String filePath, int replicationDeg) {
+	public Backup(String protocolVersion, String filePath, int replicationDeg) {
 
 		File f = new File(filePath);
 		long fileLength = f.length();
@@ -51,6 +51,7 @@ public class Backup {
 				}else numbytesRead = in.read(chunk, 0, 64000);
 
 				Thread putChunkThread = new Thread(new PutChunk(
+						protocolVersion,
 						fileID,
 					    i,
 					    replicationDeg,

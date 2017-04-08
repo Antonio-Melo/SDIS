@@ -13,14 +13,14 @@ import utils.Utils;
 
 public class PutChunk implements Runnable {
 
-	private String senderID;
+	private String protocolVersion;
 	private String fileID;
 	private int chunkNo;
 	private int replicationDegree;
 	private byte[] body;
 
-	public PutChunk(String senderID, String fileID, int chunkNo, int replicationDegree, byte[] body) {
-		this.senderID = senderID;
+	public PutChunk(String protocolVersion, String fileID, int chunkNo, int replicationDegree, byte[] body) {
+		this.protocolVersion = protocolVersion;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 		this.replicationDegree = replicationDegree;
@@ -32,7 +32,7 @@ public class PutChunk implements Runnable {
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
 				"STORED" + Utils.Space +
-				"1.0" + Utils.Space +
+				this.protocolVersion + Utils.Space +
 				Peer.serverID + Utils.Space +
 				this.fileID + Utils.Space +
 				this.chunkNo + Utils.Space +
@@ -70,8 +70,8 @@ public class PutChunk implements Runnable {
 				}else{
 					Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{this.replicationDegree,rds[1]});
 				}
-				//rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
-				//if(rds[1] < rds[0]){
+				rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+				if(this.protocolVersion.equals("1.0") ||  (this.protocolVersion.equals("2.0") && rds[1] < rds[0])){
 					try {
 						if (Peer.capacity == 0 || Peer.capacity - Peer.usedCapacity > this.body.length) {
 							f.createNewFile();
@@ -87,7 +87,7 @@ public class PutChunk implements Runnable {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				//}
+				}
 			}
 		}
 	}

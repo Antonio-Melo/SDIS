@@ -13,11 +13,13 @@ import utils.Utils;
 //RD
 public class Removed implements Runnable {
 
+	private String protocolVersion;
 	private String senderID;
 	private String fileID;
 	private int chunkNo;
 
-	public Removed(String senderID, String fileID, int chunkNo) {
+	public Removed(String protocolVersion, String senderID, String fileID, int chunkNo) {
+		this.protocolVersion = protocolVersion;
 		this.senderID = senderID;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
@@ -42,6 +44,7 @@ public class Removed implements Runnable {
 						byte chunk[] = new byte[(int) f.length()];
 						in.read(chunk, 0,(int) f.length());
 						new Thread(new PutChunk(
+								this.protocolVersion,
 								this.fileID,
 								this.chunkNo,
 								rds[0],

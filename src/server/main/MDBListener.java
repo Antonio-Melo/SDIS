@@ -26,15 +26,17 @@ public class MDBListener implements Runnable {
 				String receivedCmdString = new String(receivedCmd.getData(), receivedCmd.getOffset(), receivedCmd.getLength());
 				String cmdSplit[] = receivedCmdString.split("\\s+");
 				if(cmdSplit[0].equals("PUTCHUNK")){
-					int bodyIndex = receivedCmdString.indexOf(Utils.CRLF+Utils.CRLF)+4;
-					byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
-					new Thread(new PutChunk(
-							cmdSplit[2],
-							cmdSplit[3],
-						    Integer.parseInt(cmdSplit[4]),
-						    Integer.parseInt(cmdSplit[5]),
-						    body
-						    )).start();
+					if(cmdSplit[1].equals("1.0") || cmdSplit[1].equals(Peer.protocolVersion)){ //Always accept messages with version 1.0 but only accepts with version 2.0 if the running protocolVersion is also 2.0
+						int bodyIndex = receivedCmdString.indexOf(Utils.CRLF+Utils.CRLF)+4;
+						byte[] body = Arrays.copyOfRange(receivedCmd.getData(),bodyIndex,receivedCmd.getLength());
+						new Thread(new PutChunk(
+								cmdSplit[1], //Version
+								cmdSplit[3], //fileID
+								Integer.parseInt(cmdSplit[4]), //chunkNo
+								Integer.parseInt(cmdSplit[5]), //RD
+								body
+								)).start();
+					}
 				}
 			}
 			socket.leaveGroup(mdbGroup);
