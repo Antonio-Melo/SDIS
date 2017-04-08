@@ -9,25 +9,25 @@ public class ClientAppListener implements ClientInterface{
 	@Override
 	public void backup(String protocolVersion, String filePath, int replicationDeg) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-		new Backup(protocolVersion, filePath, replicationDeg);
+			new Backup(protocolVersion, filePath, replicationDeg);
 	}
 
 	@Override
 	public void restore(String protocolVersion, String filePath) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-		new Restore(filePath);
+			new Restore(filePath);
 	}
 
 	@Override
 	public void delete(String protocolVersion, String filePath) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-		new DeleteProtocol(filePath);
+			new DeleteProtocol(filePath);
 	}
 
 	@Override
 	public void reclaim(String protocolVersion, int diskSpace) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-		new Reclaim(diskSpace);
+			new Reclaim(protocolVersion, diskSpace);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ public class Peer {
 	public static long capacity = 0; //Capacity in bytes
 	public static long usedCapacity = 0; //Used space in bytes
 	public static boolean saveRD = false;
+	public static boolean checkRD = false;
 	public static ConcurrentHashMap<String,String> mdMap = new ConcurrentHashMap<String,String>();
 	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
 	public static ConcurrentHashMap<String,ArrayList<String>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<String>>();
@@ -136,6 +137,12 @@ public class Peer {
 		} catch (RemoteException | AlreadyBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		if(protocolVersion.equals("2.0")){
+			RDChecker rdChecker = new RDChecker();
+			Thread rdCheckerThread = new Thread(rdChecker);
+			rdCheckerThread.start();
 		}
 
 		mcThread.start();

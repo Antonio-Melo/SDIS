@@ -10,7 +10,7 @@ Space Reclaim  | X | X | 15%
 Melhoramento 1  | X | X | 05%
 Melhoramento 2  |  |  | 05%
 Melhoramento 3  |  |  | 05%
-Melhoramento 4  |  |  | 05%
+Melhoramento 4  | X | X | 05%
 Cliente RMI  | X | X | 05%
 Demo  | X | X | 05%
 Total |  |  | 85%

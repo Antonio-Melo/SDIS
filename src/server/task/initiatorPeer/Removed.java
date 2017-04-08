@@ -9,11 +9,13 @@ import server.main.Peer;
 import utils.Utils;
 
 public class Removed implements Runnable {
-
+	
+	String protocolVersion;
 	String fileID;
 	int chunkNo;
 
-	public Removed(String fileID, int chunkNo) {
+	public Removed(String protocolVersion, String fileID, int chunkNo) {
+		this.protocolVersion = protocolVersion;
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 	}
@@ -25,7 +27,7 @@ public class Removed implements Runnable {
 		InetAddress IPAddress = InetAddress.getByName(Peer.mcAddress);
 		byte[] sendData = new String(
 				"REMOVED" + Utils.Space +
-				"1.0" + Utils.Space +
+				protocolVersion + Utils.Space +
 				Peer.serverID + Utils.Space +
 				this.fileID + Utils.Space +
 				this.chunkNo + Utils.Space +

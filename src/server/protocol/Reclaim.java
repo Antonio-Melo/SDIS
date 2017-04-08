@@ -10,7 +10,7 @@ import utils.Utils;
 
 public class Reclaim {
 
-	public Reclaim(long diskSpace){
+	public Reclaim(String protocolVersion, long diskSpace){
 		Peer.capacity = diskSpace * 1000;
 		if (Peer.capacity != 0){
 			HashMap<String,int[]> sortedRDMap = Utils.sortMostReplicated();
@@ -23,6 +23,7 @@ public class Reclaim {
 						f.delete();
 						String[] keySplit = pair.getKey().split(Utils.FS);
 						new Thread(new Removed(
+								protocolVersion,
 								keySplit[0],
 							    Integer.parseInt(keySplit[1])
 							    )).start();

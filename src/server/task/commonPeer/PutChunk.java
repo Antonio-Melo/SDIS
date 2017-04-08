@@ -40,12 +40,14 @@ public class PutChunk implements Runnable {
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, Peer.mcPort);
 		clientSocket.send(sendPacket);
 		clientSocket.close();
+		if(this.protocolVersion.equals("2.0")){
+			Peer.checkRD = true;
+		}
 		return true;
 	}
 
 	@Override
 	public void run() {
-		//TODO check se o ficheiro nao e' dele
 		if (!Peer.mdMap.containsValue(this.fileID)) {
 			File dir = new File(Peer.dataPath + Utils.FS + this.fileID);
 			dir.mkdirs();
@@ -77,11 +79,6 @@ public class PutChunk implements Runnable {
 							f.createNewFile();
 							Files.write(f.toPath(), this.body);
 							Peer.usedCapacity += this.body.length;
-							/*try {
-								Thread.sleep((long)new Random().nextInt(400));
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}*/
 							sendStoredReply();
 						}
 					} catch (IOException e) {
