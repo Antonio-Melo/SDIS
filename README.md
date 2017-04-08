@@ -9,11 +9,11 @@ Delete  | X | X | 05%
 Space Reclaim  | X | X | 15%
 Melhoramento 1  | X | X | 05%
 Melhoramento 2  | X | X | 05%
-Melhoramento 3  |  |  | 05%
+Melhoramento 3  | X | X | 05%
 Melhoramento 4  | X | X | 05%
 Cliente RMI  | X | X | 05%
 Demo  | X | X | 05%
-Total |  |  | 95%
+Total | X | X | 100%
 
 
 server side

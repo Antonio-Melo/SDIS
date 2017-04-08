@@ -21,7 +21,7 @@ public class ClientAppListener implements ClientInterface{
 	@Override
 	public void delete(String protocolVersion, String filePath) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-			new DeleteProtocol(filePath);
+			new DeleteProtocol(protocolVersion, filePath);
 	}
 
 	@Override

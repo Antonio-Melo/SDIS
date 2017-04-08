@@ -25,7 +25,13 @@ public class Backup {
 		if(lastFileID != null && lastFileID.equals(fileID)){
 		}else{
 			if(lastFileID != null && !lastFileID.equals(fileID)){
-				new Thread(new Delete(lastFileID)).start();
+				new Thread(new Delete(protocolVersion, lastFileID)).start();
+			}
+			if(protocolVersion.equals("2.0")){
+				Peer.deletedFiles.remove(fileID); // remove from deleted files list
+				for(String delFileID: Peer.deletedFiles){
+					new Thread(new Delete(protocolVersion, delFileID)).start();
+				}
 			}
 			Peer.mdMap.put(filePath,fileID);
 			Utils.writeMD();

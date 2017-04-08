@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import server.protocol.ClientInterface;
@@ -33,7 +34,8 @@ public class Peer {
 	public static ConcurrentHashMap<String,String> mdMap = new ConcurrentHashMap<String,String>();
 	public static ConcurrentHashMap<String,int[]> rdMap = new ConcurrentHashMap<String,int[]>();
 	public static ConcurrentHashMap<String,ArrayList<String>> rdDetailedMap = new ConcurrentHashMap<String,ArrayList<String>>();
-
+	public static HashSet<String> deletedFiles = new HashSet<String>();
+	
 	/**
 	 * Main service starter
 	 * @param args Server arguments by the following order:
