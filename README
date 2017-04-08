@@ -13,14 +13,24 @@ sh rmi_linux.sh
 
 #Starts multiples peers at the same time
 sh run.sh
+#Starts multiples peers WITH ENHANCEMENTS at the same time
+#sh runenh.sh
 #Starts only one peer
 #sh peer.sh
+#Starts only one peer WITH ENHANCEMENTS
+#sh peerenh.sh
 
-#Multiples scripts to run the 5 possible clients(the sleep is needed to ensure the peers have started working)
+#Multiples scripts to run the 9 possible clients, first 5 WITHOUT ENHANCEMENTS, last 4 WITH ENHANCEMENTS
+#the sleep is needed to ensure the peers have started working
 sleep 4
 sh backup.sh
 #sh restore.sh
 #sh delete.sh
 #sh reclaim.sh
 #sh state.sh
-#java -classpath bin client.TestApp peer1 BACKUP test1.pdf 2
+#sh backupenh.sh
+#sh restoreenh.sh
+#sh deleteenh.sh
+#sh reclaimenh.sh
+
+#java -classpath bin client.TestApp <peer_ap> <sub_protocol> <opnd_1> <opnd_2>
