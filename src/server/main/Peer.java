@@ -112,6 +112,7 @@ public class Peer {
 		System.out.println("Loading resources...");
 		Utils.initFileSystem();
 		Utils.loadRD();
+		Utils.loadMD();
 		usedCapacity = Utils.getusedCapacity();
 		//CheckState cs = new CheckState();
 		//System.out.println(cs.getState());

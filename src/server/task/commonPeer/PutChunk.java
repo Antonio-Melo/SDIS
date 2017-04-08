@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.file.Files;
+import java.util.Random;
 
 import server.main.Peer;
 import utils.Utils;
@@ -56,6 +57,12 @@ public class PutChunk implements Runnable {
 					e.printStackTrace();
 				}
 			} else {
+				try {
+					Thread.sleep((long)new Random().nextInt(400));
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//RD
 				int rds[] = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
 				if(rds == null){
@@ -63,21 +70,24 @@ public class PutChunk implements Runnable {
 				}else{
 					Peer.rdMap.put(this.fileID + Utils.FS + this.chunkNo, new int[]{this.replicationDegree,rds[1]});
 				}
-				try {
-					if (Peer.capacity == 0 || Peer.capacity - Peer.usedCapacity > this.body.length) {
-						f.createNewFile();
-						Files.write(f.toPath(), this.body);
-						Peer.usedCapacity += this.body.length;
-						try {
-							Thread.sleep((long)(Math.random() * 400));
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+				//rds = Peer.rdMap.get(this.fileID + Utils.FS + this.chunkNo);
+				//if(rds[1] < rds[0]){
+					try {
+						if (Peer.capacity == 0 || Peer.capacity - Peer.usedCapacity > this.body.length) {
+							f.createNewFile();
+							Files.write(f.toPath(), this.body);
+							Peer.usedCapacity += this.body.length;
+							/*try {
+								Thread.sleep((long)new Random().nextInt(400));
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}*/
+							sendStoredReply();
 						}
-						sendStoredReply();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				//}
 			}
 		}
 	}

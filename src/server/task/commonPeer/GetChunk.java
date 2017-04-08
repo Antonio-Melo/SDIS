@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.util.Random;
 
 import server.main.Peer;
 import utils.Utils;
@@ -53,7 +54,7 @@ public class GetChunk implements Runnable{
 				//Call RECEIVECHUNK
 				Thread receivedThread = new Thread(new ReceiveChunk());
 				receivedThread.start();
-				receivedThread.join((long)Math.random()*400);
+				receivedThread.join((long)(long)new Random().nextInt(400));
 				if(receivedThread.isAlive()) receivedThread.interrupt();
 				if(!this.chunkAlreadySent){
 					InetAddress mdrGroup = InetAddress.getByName(Peer.mdrAddress);

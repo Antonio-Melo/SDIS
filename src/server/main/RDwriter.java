@@ -7,7 +7,6 @@ public class RDwriter implements Runnable {
     public void run()
     {
         while(!Thread.currentThread().isInterrupted()) {
-           System.out.println("Thread is doing something");
            if(Peer.saveRD == true){
              Utils.saveRD();
              Peer.saveRD = false;
