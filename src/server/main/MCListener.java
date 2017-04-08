@@ -28,6 +28,7 @@ public class MCListener implements Runnable {
 				if(cmdSplit[1].equals("1.0") || cmdSplit[1].equals(Peer.protocolVersion)){ //Always accept messages with version 1.0 but only accepts with version 2.0 if the running protocolVersion is also 2.0
 					if(cmdSplit[0].equals("GETCHUNK")){
 						new Thread(new GetChunk(
+								cmdSplit[1],
 								cmdSplit[2],
 								cmdSplit[3],
 								Integer.parseInt(cmdSplit[4])

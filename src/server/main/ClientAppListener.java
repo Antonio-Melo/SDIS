@@ -15,7 +15,7 @@ public class ClientAppListener implements ClientInterface{
 	@Override
 	public void restore(String protocolVersion, String filePath) throws RemoteException {
 		if (protocolVersion.equals("1.0") || Peer.protocolVersion.equals(protocolVersion))
-			new Restore(filePath);
+			new Restore(protocolVersion, filePath);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import server.task.initiatorPeer.GetChunk;
 
 public class Restore {
 
-	public Restore(String filePath){
+	public Restore(String protocolVersion, String filePath){
 		int chunkNumber = 0;
 		String fileId = Peer.mdMap.get(filePath);
 		OutputStream output = null;
@@ -25,7 +25,10 @@ public class Restore {
 			}
 			byte[] chunk = null;
 			do{
-				GetChunk getChunk = new GetChunk(fileId,chunkNumber);
+				GetChunk getChunk = new GetChunk(
+						protocolVersion,
+						fileId,
+						chunkNumber);
 				Thread getChunkThread = new Thread(getChunk);
 				getChunkThread.start();
 
